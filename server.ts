@@ -1,6 +1,7 @@
 // Required imports
 import express from 'express';
 import spaceshipRoutes from './api/routes/spaceshipRoutes';
+import locationRoutes from './api/routes/locationRoutes';
 
 // Express setup variables
 let app = express();
@@ -12,6 +13,7 @@ app.use(express.json());
 
 // Register the URL routes
 spaceshipRoutes(app);
+locationRoutes(app);
 
 // Start the API server at the given port
 app.listen(port);
