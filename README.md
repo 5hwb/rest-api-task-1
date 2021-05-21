@@ -4,8 +4,8 @@ Implementation of a REST API for a hypothetical spacecraft logistics system.
 
 ## TODOs
 
+* Add JSDoc comments to the functions, classes and methods.
 * Implement the location.
-* Convert all JS files to TypeScript.
 * Allow spaceships and locations to be identified by their name, model, etc (thru the URL).
 
 ## Required tools
@@ -22,7 +22,7 @@ Implementation of a REST API for a hypothetical spacecraft logistics system.
 npm install --save-dev nodemon
 npm install --save express
 npm install --save-dev typescript
-npm install --save-dev @types/node @types/react
+npm install --save-dev @types/node @types/express @types/react
 ```
 2. Compile the TypeScript with `npx tsc`.
 
