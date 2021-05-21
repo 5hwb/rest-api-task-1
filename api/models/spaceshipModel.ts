@@ -7,7 +7,30 @@
 /**
  * Indicates the current status of the Spaceship.
  */
-export enum Status { Decommissioned, Maintenance, Operational };
+export enum Status {
+  Undefined = 0, 
+  Decommissioned = 1, 
+  Maintenance = 2, 
+  Operational = 3
+};
+
+/**
+ * Convert the given string to a Status enum.
+ * @param str String to convert
+ * @returns Equivalent Status enum
+ */
+export function stringToStatus(str: string): Status {
+  switch (str) {
+    case "decommissioned":
+      return Status.Decommissioned;
+    case "maintenance":
+      return Status.Maintenance;
+    case "operational":
+      return Status.Operational;
+    default:
+      return Status.Undefined;
+  }
+}
 
 /**
  * Spaceship data model
