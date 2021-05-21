@@ -45,6 +45,4 @@ curl -X GET -H 'Content-Type: application/json' -i http://localhost:3000/spacesh
 
 ### Update a spaceship
 
-```bash
-curl -X POST -H 'Content-Type: application/json' -i http://localhost:3000/spaceships/update/1 --data '{"id": 1, "name": "Best Spacecraft One", "model": "Qwertytron 9000"}'
-```
+* Set the spaceship with an ID of 1 to operational status: `curl -X POST -H 'Content-Type: application/json' -i http://localhost:3000/spaceships/update/1 --data '{"id": 1, "status": "operational"}'`

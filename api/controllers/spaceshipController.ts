@@ -1,7 +1,7 @@
 'use strict';
 
 import { Request, Response } from "express";
-import { Status, Spaceship } from "../models/spaceshipModel";
+import { Status, Spaceship, stringToStatus } from "../models/spaceshipModel";
 
 /**
  * Handles user-inputted URLs relating to spaceships.
@@ -95,7 +95,7 @@ export default class SpaceshipController {
   }
 
   /**
-   * Update the spaceship with the given ID.
+   * Update the status of the spaceship with the given ID.
    * @param req HTTP request object
    * @param res HTTP response object
    */
@@ -112,14 +112,13 @@ export default class SpaceshipController {
       
       console.log(req.body);
 
-      // Modify element contents
-      // Currently, updates change only the name and model 
-      if (req.body.id !== undefined && req.body.name !== undefined && req.body.model !== undefined) {
-        spaceship.name = req.body.name;
-        spaceship.model = req.body.model;
+      // Modify spaceship status
+      let newStatus: string = req.body.status;
+      if (stringToStatus(newStatus) != Status.Undefined) {
+        spaceship.status = stringToStatus(newStatus);
         res.json({ spaceship_was_updated: true, new_data: spaceship });
       } else {
-        res.status(400).json({ spaceship_was_updated: false, error: "Invalid parameters", message: "1 or more required parameters are missing" });
+        res.status(400).json({ spaceship_was_updated: false, error: "Invalid parameters", message: "State parameter is either missing or invalid" });
       }
     } else {
       res.status(400).json({ spaceship_was_updated: false, error: "Invalid ID", message: "ID does not exist in the system" });
@@ -143,7 +142,7 @@ export default class SpaceshipController {
         let spaceshipID = parseInt(req.params.spaceshipID);
         this.spaceshipDB.delete(spaceshipID);
         res.json({ spaceship_was_deleted: true });
-        
+
       } else {
         res.status(400).json({ spaceship_was_deleted: false, error: "Invalid ID", message: "ID does not exist in the system" });
       }
