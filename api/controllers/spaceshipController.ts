@@ -1,15 +1,26 @@
 'use strict';
 
+import { Request, Response } from "express";
 import { Status, Spaceship } from "../models/spaceshipModel";
 
+/**
+ * Handles user-inputted URLs relating to spaceships.
+ */
 export default class SpaceshipController {
 
+  // Key-value store for the spaceship data (this will simulate a database)
   spaceshipDB: Map<number, Spaceship>;
 
   constructor() {
     this.spaceshipDB = new Map();
   }
 
+  /**
+   * Check if the given string represents a valid ID in the database.
+   * @param id The ID to check
+   * @param spaceshipDB Database to examine
+   * @returns true if 'id' is present in 'spaceshipDB', false otherwise
+   */
   isValidId(id: string, spaceshipDB: Map<number, Spaceship>): boolean {
     let parsedID = parseInt(id);
     if (!isNaN(parsedID) && spaceshipDB.has(parsedID)) {
@@ -18,11 +29,21 @@ export default class SpaceshipController {
     return false;
   }
 
-  defaultUrlAction = (req: any, res: any) => {
+  /**
+   * Send a plain HTML response to direct the user to the /spaceships URL.
+   * @param req HTTP request object
+   * @param res HTTP response object
+   */
+  defaultUrlAction = (req: Request, res: Response) => {
     res.send("You've entered the default URL. Go to http://localhost:3000/spaceships to view data on all the spaceships.");
   }
 
-  listSpaceships = (req: any, res: any) => {
+  /**
+   * List all spaceships in the database.
+   * @param req HTTP request object
+   * @param res HTTP response object
+   */
+  listSpaceships = (req: Request, res: Response) => {
     console.log("listSpaceships");
     console.log(req.headers['content-type']);
 
@@ -33,7 +54,12 @@ export default class SpaceshipController {
     res.json({ data: allSpaceships });
   }
 
-  createSpaceship = (req: any, res: any) => {
+  /**
+   * Add a new spaceship to the database.
+   * @param req HTTP request object
+   * @param res HTTP response object
+   */
+  createSpaceship = (req: Request, res: Response) => {
     console.log("createSpaceship");
     console.log(req.headers['content-type']);
 
@@ -48,7 +74,12 @@ export default class SpaceshipController {
     }
   }
 
-  readSpaceship = (req: any, res: any) => {
+  /**
+   * Get the spaceship with the given ID.
+   * @param req HTTP request object
+   * @param res HTTP response object
+   */
+  readSpaceship = (req: Request, res: Response) => {
     console.log("readSpaceship");
     console.log(req.headers['content-type']);
 
@@ -63,7 +94,12 @@ export default class SpaceshipController {
     }
   }
 
-  updateSpaceship = (req: any, res: any) => {
+  /**
+   * Update the spaceship with the given ID.
+   * @param req HTTP request object
+   * @param res HTTP response object
+   */
+  updateSpaceship = (req: Request, res: Response) => {
     console.log("updateSpaceship");
     console.log(req.headers['content-type']);
 
@@ -91,16 +127,23 @@ export default class SpaceshipController {
     
   }
 
-  deleteSpaceship = (req: any, res: any) => {
+  /**
+   * Delete the spaceship with the given ID.
+   * @param req HTTP request object
+   * @param res HTTP response object
+   */
+  deleteSpaceship = (req: Request, res: Response) => {
     console.log("deleteSpaceship");
     console.log(req.headers['content-type']);  
 
       // Check the ID for validity 
       if (this.isValidId(req.params.spaceshipID, this.spaceshipDB)) {
+
         // Delete the element with the given ID
         let spaceshipID = parseInt(req.params.spaceshipID);
         this.spaceshipDB.delete(spaceshipID);
         res.json({ spaceship_was_deleted: true });
+        
       } else {
         res.status(400).json({ spaceship_was_deleted: false, error: "Invalid ID", message: "ID does not exist in the system" });
       }

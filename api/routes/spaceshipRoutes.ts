@@ -2,6 +2,10 @@
 
 import SpaceshipController from '../controllers/spaceshipController';
 
+/**
+ * Set up the URL routes relating to spaceships.
+ * @param app Express instance
+ */
 export default function spaceshipRoutes(app: any) {
 
   // Set up controller

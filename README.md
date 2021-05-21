@@ -4,8 +4,8 @@ Implementation of a REST API for a hypothetical spacecraft logistics system.
 
 ## TODOs
 
+* Add JSDoc comments to the functions, classes and methods.
 * Implement the location.
-* Convert all JS files to TypeScript.
 * Allow spaceships and locations to be identified by their name, model, etc (thru the URL).
 
 ## Required tools
