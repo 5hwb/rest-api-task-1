@@ -1,6 +1,11 @@
 'use strict';
-module.exports = function(app) {
-  var spaceshipController = require('../controllers/spaceshipController');
+
+import SpaceshipController from '../controllers/spaceshipController';
+
+export default function spaceshipRoutes(app: any) {
+
+  // Set up controller
+  let spaceshipController: SpaceshipController = new SpaceshipController();
 
   app.route('/')
     .get(spaceshipController.defaultUrlAction);
