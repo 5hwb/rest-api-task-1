@@ -13,7 +13,7 @@ function isValidId(id, spaceshipDB) {
 }
 
 exports.defaultUrlAction = function(req, res) {
-  res.send("Hello World ya drongo");
+  res.send("You've entered the default URL. Go to http://localhost:3000/spaceships to view data on all the spaceships.");
 };
 
 exports.listSpaceships = function(req, res) {
@@ -24,7 +24,7 @@ exports.listSpaceships = function(req, res) {
   for (let entry of spaceshipDB.values()) {
     allSpaceships.push(entry);
   }
-  res.json({ db: allSpaceships });
+  res.json({ data: allSpaceships });
 };
 
 exports.createSpaceship = function(req, res) {
@@ -36,9 +36,9 @@ exports.createSpaceship = function(req, res) {
     let newSpaceship = new Spaceship(req.body.id, req.body.name, req.body.model);
     spaceshipDB.set(req.body.id, newSpaceship);
     console.log("Added '" + newSpaceship + "' to the list!");
-    res.json({ do_you_know: "MAKE IT!" });
+    res.json({ spaceship_was_created: true });
   } else {
-    res.send("Invalid ID");
+    res.status(400).json({ spaceship_was_created: false, error: "Invalid ID", message: "ID does not exist in the system" });
   }
 };
 
@@ -51,9 +51,9 @@ exports.readSpaceship = function(req, res) {
     // Get the element with the given ID
     let spaceshipID = parseInt(req.params.spaceshipID);
     let spaceship = spaceshipDB.get(spaceshipID);
-    res.json({ do_you_know: "READ IT!" , element: spaceship });
+    res.json({ data: spaceship });
   } else {
-    res.send("Invalid ID");
+    res.status(400).json({ error: "Invalid ID", message: "ID does not exist in the system" });
   }
 };
 
@@ -74,12 +74,12 @@ exports.updateSpaceship = function(req, res) {
     if (req.body.id !== undefined && req.body.name !== undefined && req.body.model !== undefined) {
       spaceship.name = req.body.name;
       spaceship.model = req.body.model;
-      res.json({ do_you_know: "UPDATE IT!", contents: req.body });
+      res.json({ spaceship_was_updated: true, new_data: spaceship });
     } else {
-      res.send("Invalid parameters");
+      res.status(400).json({ spaceship_was_updated: false, error: "Invalid parameters", message: "1 or more required parameters are missing" });
     }
   } else {
-    res.send("Invalid ID");
+    res.status(400).json({ spaceship_was_updated: false, error: "Invalid ID", message: "ID does not exist in the system" });
   }
   
 };
@@ -93,8 +93,8 @@ exports.deleteSpaceship = function(req, res) {
       // Delete the element with the given ID
       let spaceshipID = parseInt(req.params.spaceshipID);
       spaceshipDB.delete(spaceshipID);
-      res.json({ do_you_know: "deleteit." });
+      res.json({ spaceship_was_deleted: true });
     } else {
-      res.send("Invalid ID");
+      res.status(400).json({ spaceship_was_deleted: false, error: "Invalid ID", message: "ID does not exist in the system" });
     }
 };
