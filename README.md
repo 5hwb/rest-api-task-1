@@ -22,7 +22,7 @@ Implementation of a REST API for a hypothetical spacecraft logistics system.
 npm install --save-dev nodemon
 npm install --save express
 npm install --save-dev typescript
-npm install --save-dev @types/node @types/react
+npm install --save-dev @types/node @types/express @types/react
 ```
 2. Compile the TypeScript with `npx tsc`.
 
