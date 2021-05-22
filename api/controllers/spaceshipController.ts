@@ -59,10 +59,12 @@ export default class SpaceshipController {
     console.log(req.headers['content-type']);
 
     // Get values from request body and create new Spaceship instance to add
-    if (req.body.id !== undefined && req.body.name !== undefined && req.body.model !== undefined) {
+    if (req.body.id !== undefined && req.body.name !== undefined 
+      && req.body.model !== undefined 
+      && req.body.currentLocationId !== undefined) {
 
       // Check if provided current location ID is valid
-      if (req.body.currentLocationId !== undefined && this.locationDB.isValidId(req.body.currentLocationId)) {
+      if (this.locationDB.isValidId(req.body.currentLocationId)) {
         let newSpaceship = new Spaceship(req.body.id, req.body.name, req.body.model, this.locationDB.get(req.body.currentLocationId));
         this.spaceshipDB.add(newSpaceship);
         console.log("Added '" + newSpaceship + "' to the list!");
