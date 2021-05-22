@@ -27,6 +27,9 @@ export default function spaceshipRoutes(app: any, spaceshipDatabase: MockDatabas
   app.route('/spaceships/update/:spaceshipID')
     .post(spaceshipController.updateSpaceship);
 
+  app.route('/spaceships/move/:spaceshipID/to-location/:newLocationID')
+    .post(spaceshipController.moveSpaceship);
+
   app.route('/spaceships/delete/:spaceshipID')
     .delete(spaceshipController.deleteSpaceship);
 

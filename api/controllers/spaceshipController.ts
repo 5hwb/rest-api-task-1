@@ -2,6 +2,7 @@
 
 import { Request, Response } from "express";
 import MockDatabase from "../databases/MockDatabase";
+import { Location } from "../models/locationModel";
 import { Status, Spaceship, stringToStatus } from "../models/spaceshipModel";
 
 /**
@@ -126,6 +127,37 @@ export default class SpaceshipController {
       }
     } else {
       res.status(400).json({ spaceship_was_updated: false, error: "Invalid ID", message: "ID does not exist in the system" });
+    }
+  }
+
+  /**
+   * Move a spaceship to a designated location with the given ID.
+   * @param req HTTP request object
+   * @param res HTTP response object
+   */
+  moveSpaceship = (req: Request, res: Response) => {
+    console.log("moveSpaceship");
+    console.log(req.headers['content-type']);
+
+    // Check the ID for validity 
+    if (this.spaceshipDB.isValidId(req.params.spaceshipID) 
+      && this.locationDB.isValidId(req.params.newLocationID)) {
+      
+        // Get the spaceship and new location with the given IDs.
+      // Note: at this point, the ID is definitely a valid one, hence the use of the non-null assertion operator
+      let spaceshipID: number = parseInt(req.params.spaceshipID);
+      let spaceship: Spaceship = this.spaceshipDB.get(spaceshipID)!;
+      let newLocationID: number = parseInt(req.params.newLocationID);
+      let newLocation: Location = this.locationDB.get(newLocationID)!;
+      
+      // Modify spaceship status
+      if (spaceship.moveLocation(newLocation)) {
+        res.json({ spaceship_was_moved: true });
+      } else {
+        res.status(400).json({ spaceship_was_moved: false, error: "Internal error", message: "Something prevented the moving from taking place" });
+      }
+    } else {
+      res.status(400).json({ spaceship_was_moved: false, error: "Invalid IDs", message: "One or both of the IDs do not exist in the system" });
     }
   }
 

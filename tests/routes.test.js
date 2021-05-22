@@ -21,11 +21,11 @@ describe('REST API Test Cases', () => {
   });
 
   // The following 2 locations will be used for the spaceship movement test cases 
+
   it('should create a 2nd new location', async () => {
     const res = await request(app)
       .put('/locations/create')
       .send({"id": 11, "cityName": "Outer Rings", "planetName": "Saturn", "capacity": 1});
-      
     expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty('location_was_created');
     expect(res.body.location_was_created).toEqual(true);
@@ -33,8 +33,15 @@ describe('REST API Test Cases', () => {
   it('should create a 3rd new location', async () => {
     const res = await request(app)
       .put('/locations/create')
-      .send({"id": 12, "cityName": "The Mars City", "planetName": "Mars", "capacity": 3});
-      
+      .send({"id": 12, "cityName": "The Mars City", "planetName": "Mars", "capacity": 5});
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty('location_was_created');
+    expect(res.body.location_was_created).toEqual(true);
+  });
+  it('should create a 4th new location', async () => {
+    const res = await request(app)
+      .put('/locations/create')
+      .send({"id": 13, "cityName": "Muh Ocean", "planetName": "Earth", "capacity": 2});
     expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty('location_was_created');
     expect(res.body.location_was_created).toEqual(true);
@@ -190,6 +197,36 @@ describe('REST API Test Cases', () => {
     expect(res.body.spaceship_was_created).toEqual(true);
   });
 
+  // The following 3 spaceships will be used for the spaceship movement test cases 
+
+  it('should create a 2nd new spaceship', async () => {
+    const res = await request(app)
+      .put('/spaceships/create')
+      .send({id: 7, name: "Old thingo", model: "1st Gen Skycar (2030)", currentLocationId: 12});
+    expect(res.body).toEqual({ spaceship_was_created: true });
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty('spaceship_was_created');
+    expect(res.body.spaceship_was_created).toEqual(true);
+  });
+  it('should create a 3rd new spaceship', async () => {
+    const res = await request(app)
+      .put('/spaceships/create')
+      .send({id: 8, name: "Old thingo 2", model: "1st Gen Skycar (2030)", currentLocationId: 12});
+    expect(res.body).toEqual({ spaceship_was_created: true });
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty('spaceship_was_created');
+    expect(res.body.spaceship_was_created).toEqual(true);
+  });
+  it('should create a 4th new spaceship', async () => {
+    const res = await request(app)
+      .put('/spaceships/create')
+      .send({id: 9, name: "Old thingo 3", model: "1st Gen Skycar (2030)", currentLocationId: 12}); 
+    expect(res.body).toEqual({ spaceship_was_created: true });
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty('spaceship_was_created');
+    expect(res.body.spaceship_was_created).toEqual(true);
+  });
+
   //////////////////////////////////////////////////
   // Error checking for create operations
   //////////////////////////////////////////////////
@@ -278,7 +315,7 @@ describe('REST API Test Cases', () => {
 
   it('should give an error when reading a nonexistent spaceship', async () => {
     const res = await request(app)
-      .get('/spaceships/7');
+      .get('/spaceships/10');
 
     expect(res.statusCode).toEqual(400);
     expect(res.body).toHaveProperty("error");
@@ -328,8 +365,8 @@ describe('REST API Test Cases', () => {
 
   it('should give an error when updating nonexistent spaceship', async () => {
     const res = await request(app)
-      .post('/spaceships/update/7')
-      .send({id: 7, status: "operational"});
+      .post('/spaceships/update/10')
+      .send({id: 10, status: "operational"});
 
     expect(res.statusCode).toEqual(400);
     expect(res.body).toHaveProperty("spaceship_was_updated");
@@ -341,7 +378,7 @@ describe('REST API Test Cases', () => {
   it('should give an error when updating with invalid URL parameters', async () => {
     const res = await request(app)
       .post('/spaceships/update/qqeqeeqeq')
-      .send({id: 7, status: "operational"});
+      .send({id: 10, status: "operational"});
 
     expect(res.statusCode).toEqual(400);
     expect(res.body).toHaveProperty("spaceship_was_updated");
@@ -395,7 +432,7 @@ describe('REST API Test Cases', () => {
 
   it('should give an error when deleting a nonexistent spaceship', async () => {
     const res = await request(app)
-      .delete('/spaceships/delete/7');
+      .delete('/spaceships/delete/10');
 
     expect(res.statusCode).toEqual(400);
     expect(res.body).toHaveProperty("error");
@@ -410,4 +447,96 @@ describe('REST API Test Cases', () => {
     expect(res.body).toHaveProperty("error");
     expect(res.body.error).toEqual("Invalid ID");
   });
+
+  // ===============================================
+  // ===============================================
+  // Spaceship moving
+  // ===============================================
+  // ===============================================
+
+  it('spaceship with ID of 7 (currently at location with ID of 12) should be able to move to location with ID of 11', async () => {
+    // Set spaceship to operational status
+    await request(app)
+      .post('/spaceships/update/7')
+      .send({id: 7, status: "operational"});
+
+    // Attempt the move
+    const res = await request(app)
+      .post('/spaceships/move/7/to-location/11');
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty('spaceship_was_moved');
+    expect(res.body.spaceship_was_moved).toEqual(true);
+  });
+
+  //////////////////////////////////////////////////
+  // Error checking for move operation
+  //////////////////////////////////////////////////
+
+  it('spaceship with ID of 7 (currently at location with ID of 11) should not be able to move to location with ID of 11 again', async () => {
+    // Attempt the move
+    const res = await request(app)
+      .post('/spaceships/move/7/to-location/11');
+
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toHaveProperty('spaceship_was_moved');
+    expect(res.body.spaceship_was_moved).toEqual(false);
+    expect(res.body).toHaveProperty('error');
+    expect(res.body.error).toEqual("Internal error");
+  });
+
+  it('spaceship with ID of 8 (currently at location with ID of 12) should not be able to move to location with ID of 11 as its capacity has been exceeded', async () => {
+    // Set spaceship to operational status
+    await request(app)
+      .post('/spaceships/update/8')
+      .send({id: 8, status: "operational"});
+
+    // Attempt the move
+    const res = await request(app)
+      .post('/spaceships/move/8/to-location/11');
+
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toHaveProperty('spaceship_was_moved');
+    expect(res.body.spaceship_was_moved).toEqual(false);
+    expect(res.body).toHaveProperty('error');
+    expect(res.body.error).toEqual("Internal error");
+  });
+
+  it('spaceship with ID of 9 (currently at location with ID of 12) should not be able to move to location with ID of 13 as its status is not Operational', async () => {
+    // Attempt the move
+    const res = await request(app)
+      .post('/spaceships/move/9/to-location/13');
+
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toHaveProperty('spaceship_was_moved');
+    expect(res.body.spaceship_was_moved).toEqual(false);
+    expect(res.body).toHaveProperty('error');
+    expect(res.body.error).toEqual("Internal error");
+  });
+
+  it('should not move non-existent spaceship', async () => {
+    // Attempt the move
+    const res = await request(app)
+      .post('/spaceships/move/100/to-location/11');
+
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toHaveProperty('spaceship_was_moved');
+    expect(res.body.spaceship_was_moved).toEqual(false);
+    expect(res.body).toHaveProperty('error');
+    expect(res.body.error).toEqual("Invalid IDs");
+  });
+
+  it('should not move spaceship with ID of 7 (currently at location with ID of 11) to non-existent location', async () => {
+    // Attempt the move
+    const res = await request(app)
+      .post('/spaceships/move/7/to-location/50');
+
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toHaveProperty('spaceship_was_moved');
+    expect(res.body.spaceship_was_moved).toEqual(false);
+    expect(res.body).toHaveProperty('error');
+    expect(res.body.error).toEqual("Invalid IDs");
+  });
+
+
 });
