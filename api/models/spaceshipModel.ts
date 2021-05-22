@@ -77,13 +77,15 @@ export class Spaceship {
   }
 
   /**
-   * Move the Spaceship to the given new location.
+   * Move the Spaceship to the given new location. 
+   * Only Spaceships with operational status can be moved.
    * @param newLocation New location of the spaceship
    * @returns True if spaceship was moved, false otherwise
    */
   moveLocation(newLocation: Location): boolean {
     if ((newLocation !== undefined && newLocation !== null)
-      && !newLocation.spaceshipRegistry.has(this.id)) {
+      && !newLocation.spaceshipRegistry.has(this.id)
+      && this.status == Status.Operational) {
 
       // Check if the moving operation can be done first
       if (this.currentLocation.spaceshipCanBeRemoved(this) 
