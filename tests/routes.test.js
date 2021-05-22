@@ -193,6 +193,58 @@ describe('REST API Test Cases', () => {
     expect(res.body.location_was_created).toEqual(true);
   });
 
+  //////////////////////////////////////////////////
+  // Error checking for create operations
+  //////////////////////////////////////////////////
+
+  it('should give an error if location ID is missing', async () => {
+    const res = await request(app)
+      .put('/locations/create')
+      .send({"cityName": "Skydust", "planetName": "Pluto", "capacity": 2});
+      
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toHaveProperty('location_was_created');
+    expect(res.body.location_was_created).toEqual(false);
+    expect(res.body).toHaveProperty("error");
+    expect(res.body.error).toEqual("Invalid parameters");
+  });
+
+  it('should give an error if city name is missing', async () => {
+    const res = await request(app)
+      .put('/locations/create')
+      .send({"id": 10, "planetName": "Pluto", "capacity": 2});
+      
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toHaveProperty('location_was_created');
+    expect(res.body.location_was_created).toEqual(false);
+    expect(res.body).toHaveProperty("error");
+    expect(res.body.error).toEqual("Invalid parameters");
+  });
+
+  it('should give an error if planet name is missing', async () => {
+    const res = await request(app)
+      .put('/locations/create')
+      .send({"id": 10, "cityName": "Skydust", "capacity": 2});
+      
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toHaveProperty('location_was_created');
+    expect(res.body.location_was_created).toEqual(false);
+    expect(res.body).toHaveProperty("error");
+    expect(res.body.error).toEqual("Invalid parameters");
+  });
+
+  it('should give an error if capacity info is missing', async () => {
+    const res = await request(app)
+      .put('/locations/create')
+      .send({"id": 10, "cityName": "Skydust", "planetName": "Pluto"});
+      
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toHaveProperty('location_was_created');
+    expect(res.body.location_was_created).toEqual(false);
+    expect(res.body).toHaveProperty("error");
+    expect(res.body.error).toEqual("Invalid parameters");
+  });
+
   // ===============================================
   // ===============================================
   // Location reading
