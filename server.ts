@@ -20,7 +20,7 @@ const spaceshipDatabase: MockDatabase = new SpaceshipDatabase();
 
 // Register the URL routes
 locationRoutes(app, locationDatabase);
-spaceshipRoutes(app, spaceshipDatabase);
+spaceshipRoutes(app, spaceshipDatabase, locationDatabase);
 
 // Start the API server at the given port
 app.listen(port);

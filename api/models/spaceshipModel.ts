@@ -42,7 +42,7 @@ export class Spaceship {
   name: string;
   model: string;
   status: Status;
-  //currentLocation: Location; // TODO: find out how to add!
+  currentLocation: Location;
 
   /**
    * Create a new Spaceship instance.
@@ -50,12 +50,12 @@ export class Spaceship {
    * @param name Name of spaceship
    * @param model Model of spaceship
    */
-  constructor(id: number, name: string, model: string/*, location: Location*/) {
+  constructor(id: number, name: string, model: string, location: Location) {
     this.id = id;
     this.name = name;
     this.model = model;
     this.status = Status.Maintenance;
-    //this.currentLocation = location;
+    this.currentLocation = location;
   }
 
   /**
@@ -63,6 +63,6 @@ export class Spaceship {
    * @returns String representation
    */
   toString(): string {
-    return "id: " + this.id + ", name: " + this.name + ", model: " + this.model + ", status: " + this.status;
+    return "id: " + this.id + ", name: " + this.name + ", model: " + this.model + ", status: " + this.status + ", currentLocation: { " + this.currentLocation + " }";
   }
 }

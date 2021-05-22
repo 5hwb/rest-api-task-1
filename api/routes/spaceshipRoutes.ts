@@ -7,10 +7,10 @@ import MockDatabase from '../databases/MockDatabase';
  * Set up the URL routes relating to spaceships.
  * @param app Express instance
  */
-export default function spaceshipRoutes(app: any, spaceshipDatabase: MockDatabase) {
+export default function spaceshipRoutes(app: any, spaceshipDatabase: MockDatabase, locationDatabase: MockDatabase) {
 
   // Set up controller
-  let spaceshipController: SpaceshipController = new SpaceshipController(spaceshipDatabase);
+  let spaceshipController: SpaceshipController = new SpaceshipController(spaceshipDatabase, locationDatabase);
 
   app.route('/')
     .get(spaceshipController.defaultUrlAction);
