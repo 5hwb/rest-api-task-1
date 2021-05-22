@@ -2,12 +2,6 @@
 
 Implementation of a REST API for a hypothetical spacecraft logistics system.
 
-## TODOs
-
-* Add JSDoc comments to the functions, classes and methods.
-* Implement the location.
-* Allow spaceships and locations to be identified by their name, model, etc (thru the URL).
-
 ## Required tools
 
 * Node.js
@@ -34,9 +28,9 @@ npm install --save-dev jest supertest
 
 ## Usage
 
-### Add sample spaceships
+### Add sample locations and spaceships
 
-Run `add_sample_data.sh` in the terminal.
+To experiment with the REST API, run `add_sample_data.sh` in the terminal to add sample locations and spaceships.
 
 ### Get all spaceships
 
