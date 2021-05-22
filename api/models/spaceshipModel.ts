@@ -38,10 +38,15 @@ export function stringToStatus(str: string): Status {
  * Spaceship data model
  */
 export class Spaceship {
+  // Basic spaceship info
   id: number;
   name: string;
   model: string;
+
+  // Current spaceship status
   status: Status;
+
+  // Current location of this spaceship
   currentLocation: Location;
 
   /**
@@ -56,6 +61,11 @@ export class Spaceship {
     this.model = model;
     this.status = Status.Maintenance;
     this.currentLocation = location;
+
+    // Register this Spaceship with the current location
+    if (this.currentLocation !== undefined) {
+      this.currentLocation.addIncomingSpaceship(this);
+    }
   }
 
   /**
