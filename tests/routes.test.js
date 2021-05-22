@@ -20,6 +20,46 @@ describe('REST API Test Cases', () => {
     expect(res.body.spaceship_was_created).toEqual(true);
   });
 
+  //////////////////////////////////////////////////
+  // Error checking for create operations
+  //////////////////////////////////////////////////
+
+  it('should give an error if spaceship ID is missing', async () => {
+    const res = await request(app)
+      .put('/spaceships/create')
+      .send({name: "Galactic Superstar 6", model: "Hujiko 8000"});
+      
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toHaveProperty('spaceship_was_created');
+    expect(res.body.spaceship_was_created).toEqual(false);
+    expect(res.body).toHaveProperty("error");
+    expect(res.body.error).toEqual("Invalid parameters");
+  });
+
+  it('should give an error if spaceship name is missing', async () => {
+    const res = await request(app)
+      .put('/spaceships/create')
+      .send({id: 6, model: "Hujiko 8000"});
+      
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toHaveProperty('spaceship_was_created');
+    expect(res.body.spaceship_was_created).toEqual(false);
+    expect(res.body).toHaveProperty("error");
+    expect(res.body.error).toEqual("Invalid parameters");
+  });
+
+  it('should give an error if spaceship model is missing', async () => {
+    const res = await request(app)
+      .put('/spaceships/create')
+      .send({id: 6, name: "Galactic Superstar 6"});
+      
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toHaveProperty('spaceship_was_created');
+    expect(res.body.spaceship_was_created).toEqual(false);
+    expect(res.body).toHaveProperty("error");
+    expect(res.body.error).toEqual("Invalid parameters");
+  });
+
   // ===============================================
   // ===============================================
   // Spaceship reading
