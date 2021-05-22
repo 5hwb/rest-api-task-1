@@ -20,6 +20,26 @@ describe('REST API Test Cases', () => {
     expect(res.body.location_was_created).toEqual(true);
   });
 
+  // The following 2 locations will be used for the spaceship movement test cases 
+  it('should create a 2nd new location', async () => {
+    const res = await request(app)
+      .put('/locations/create')
+      .send({"id": 11, "cityName": "Outer Rings", "planetName": "Saturn", "capacity": 1});
+      
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty('location_was_created');
+    expect(res.body.location_was_created).toEqual(true);
+  });
+  it('should create a 3rd new location', async () => {
+    const res = await request(app)
+      .put('/locations/create')
+      .send({"id": 12, "cityName": "The Mars City", "planetName": "Mars", "capacity": 3});
+      
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty('location_was_created');
+    expect(res.body.location_was_created).toEqual(true);
+  });
+
   //////////////////////////////////////////////////
   // Error checking for create operations
   //////////////////////////////////////////////////
@@ -100,7 +120,7 @@ describe('REST API Test Cases', () => {
 
   it('should give an error when reading a nonexistent location', async () => {
     const res = await request(app)
-      .get('/locations/11');
+      .get('/locations/20');
 
     expect(res.statusCode).toEqual(400);
     expect(res.body).toHaveProperty("error");
@@ -137,7 +157,7 @@ describe('REST API Test Cases', () => {
 
   it('should give an error when deleting a nonexistent location', async () => {
     const res = await request(app)
-      .delete('/locations/delete/11');
+      .delete('/locations/delete/20');
 
     expect(res.statusCode).toEqual(400);
     expect(res.body).toHaveProperty("error");
@@ -162,8 +182,9 @@ describe('REST API Test Cases', () => {
   it('should create a new spaceship', async () => {
     const res = await request(app)
       .put('/spaceships/create')
-      .send({id: 6, name: "Galactic Superstar 6", model: "Hujiko 8000"});
+      .send({id: 6, name: "Galactic Superstar 6", model: "Hujiko 8000", currentLocationId: 12});
       
+    expect(res.body).toEqual({ spaceship_was_created: true });
     expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty('spaceship_was_created');
     expect(res.body.spaceship_was_created).toEqual(true);
@@ -207,6 +228,30 @@ describe('REST API Test Cases', () => {
     expect(res.body.spaceship_was_created).toEqual(false);
     expect(res.body).toHaveProperty("error");
     expect(res.body.error).toEqual("Invalid parameters");
+  });
+
+  it('should give an error if current location ID is missing', async () => {
+    const res = await request(app)
+      .put('/spaceships/create')
+      .send({id: 6, name: "Galactic Superstar 6", model: "Hujiko 8000"});
+      
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toHaveProperty('spaceship_was_created');
+    expect(res.body.spaceship_was_created).toEqual(false);
+    expect(res.body).toHaveProperty("error");
+    expect(res.body.error).toEqual("Invalid parameters");
+  });
+
+  it('should give an error if the given current location ID is invalid', async () => {
+    const res = await request(app)
+      .put('/spaceships/create')
+      .send({id: 6, name: "Galactic Superstar 6", model: "Hujiko 8000", currentLocationId: 20});
+      
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toHaveProperty('spaceship_was_created');
+    expect(res.body.spaceship_was_created).toEqual(false);
+    expect(res.body).toHaveProperty("error");
+    expect(res.body.error).toEqual("Invalid current location ID");
   });
 
   // ===============================================
