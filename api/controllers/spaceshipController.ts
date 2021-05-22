@@ -70,7 +70,7 @@ export default class SpaceshipController {
       console.log("Added '" + newSpaceship + "' to the list!");
       res.json({ spaceship_was_created: true });
     } else {
-      res.status(400).json({ spaceship_was_created: false, error: "Invalid ID", message: "ID does not exist in the system" });
+      res.status(400).json({ spaceship_was_created: false, error: "Invalid parameters", message: "Required parameters to add a new location were not identified" });
     }
   }
 
