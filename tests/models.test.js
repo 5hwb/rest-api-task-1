@@ -2,6 +2,10 @@ const { Location } = require("../api/models/locationModel");
 const { Spaceship } = require("../api/models/spaceshipModel");
 
 describe('Model Test Cases', () => {
+  //////////////////////////////////////////////////
+  // Integration tests for Spaceship constructor
+  //////////////////////////////////////////////////
+
   let location1 = new Location(10, "Skydust", "Pluto", 2);
   let location2 = new Location(11, "Outer Rings", "Saturn", 1);
 
@@ -19,7 +23,35 @@ describe('Model Test Cases', () => {
   });
 
   //////////////////////////////////////////////////
-  // Unit tests for addIncomingSpaceship()
+  // Integration tests for Spaceship moveLocation()
+  //////////////////////////////////////////////////
+
+  it('spaceship1 should be able to move to location2', async () => {
+    expect(spaceship1.moveLocation(location2)).toBe(true);
+    expect(location1.spaceshipRegistry.has(spaceship1.id)).toEqual(false);
+    expect(location1.spaceshipRegistry.size).toEqual(1);
+    expect(location2.spaceshipRegistry.has(spaceship1.id)).toEqual(true);
+    expect(location2.spaceshipRegistry.size).toEqual(1);
+  });
+
+  it('spaceship1 should not be able to move to location2 again', async () => {
+    expect(spaceship1.moveLocation(location2)).toBe(false);
+    expect(location1.spaceshipRegistry.has(spaceship1.id)).toEqual(false);
+    expect(location1.spaceshipRegistry.size).toEqual(1);
+    expect(location2.spaceshipRegistry.has(spaceship1.id)).toEqual(true);
+    expect(location2.spaceshipRegistry.size).toEqual(1);
+  });
+
+  it('spaceship2 should not be able to move to location2 as its capacity has been exceeded', async () => {
+    expect(spaceship2.moveLocation(location2)).toBe(false);
+    expect(location1.spaceshipRegistry.has(spaceship1.id)).toEqual(false);
+    expect(location1.spaceshipRegistry.size).toEqual(1);
+    expect(location2.spaceshipRegistry.has(spaceship1.id)).toEqual(true);
+    expect(location2.spaceshipRegistry.size).toEqual(1);
+  });
+
+  //////////////////////////////////////////////////
+  // Unit tests for Location addIncomingSpaceship()
   //////////////////////////////////////////////////
 
   it('should add an incoming spaceship', async () => {
@@ -64,7 +96,7 @@ describe('Model Test Cases', () => {
   });
 
   //////////////////////////////////////////////////
-  // Integration tests for removeOutgoingSpaceship()
+  // Integration tests for Location removeOutgoingSpaceship()
   //////////////////////////////////////////////////
 
   it('should remove an outgoing spaceship', async () => {

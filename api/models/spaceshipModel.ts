@@ -75,4 +75,25 @@ export class Spaceship {
   toString(): string {
     return "id: " + this.id + ", name: " + this.name + ", model: " + this.model + ", status: " + this.status + ", currentLocation: { " + this.currentLocation + " }";
   }
+
+  /**
+   * Move the Spaceship to the given new location.
+   * @param newLocation New location of the spaceship
+   * @returns True if spaceship was moved, false otherwise
+   */
+  moveLocation(newLocation: Location): boolean {
+    if ((newLocation !== undefined && newLocation !== null)
+      && !newLocation.spaceshipRegistry.has(this.id)) {
+
+      // Check if the moving operation can be done first
+      if (this.currentLocation.spaceshipCanBeRemoved(this) 
+        && newLocation.spaceshipCanBeAdded(this)) {
+
+        this.currentLocation.removeOutgoingSpaceship(this);
+        newLocation.addIncomingSpaceship(this);
+        return true; 
+      }
+    }
+    return false;
+  }
 }
