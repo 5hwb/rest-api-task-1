@@ -1,13 +1,13 @@
 'use strict';
 
 import SpaceshipController from '../controllers/spaceshipController';
-import SpaceshipDatabase from '../databases/spaceshipDatabase';
+import MockDatabase from '../databases/MockDatabase';
 
 /**
  * Set up the URL routes relating to spaceships.
  * @param app Express instance
  */
-export default function spaceshipRoutes(app: any, spaceshipDatabase: SpaceshipDatabase) {
+export default function spaceshipRoutes(app: any, spaceshipDatabase: MockDatabase) {
 
   // Set up controller
   let spaceshipController: SpaceshipController = new SpaceshipController(spaceshipDatabase);

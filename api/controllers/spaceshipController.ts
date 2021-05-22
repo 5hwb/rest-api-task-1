@@ -1,7 +1,7 @@
 'use strict';
 
 import { Request, Response } from "express";
-import SpaceshipDatabase from "../databases/spaceshipDatabase";
+import MockDatabase from "../databases/MockDatabase";
 import { Status, Spaceship, stringToStatus } from "../models/spaceshipModel";
 
 /**
@@ -10,13 +10,13 @@ import { Status, Spaceship, stringToStatus } from "../models/spaceshipModel";
 export default class SpaceshipController {
 
   // Instance of spaceship database
-  database: SpaceshipDatabase;
+  database: MockDatabase;
 
   /**
    * Create a new SpaceshipController.
    * @param database The spaceship database instance to use
    */
-  constructor(database: SpaceshipDatabase) {
+  constructor(database: MockDatabase) {
     this.database = database;
   }
 

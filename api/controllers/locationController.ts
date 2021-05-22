@@ -1,7 +1,7 @@
 'use strict';
 
 import { Request, Response } from "express";
-import LocationDatabase from "../databases/locationDatabase";
+import MockDatabase from "../databases/MockDatabase";
 import { Location } from "../models/locationModel";
 
 /**
@@ -10,28 +10,14 @@ import { Location } from "../models/locationModel";
 export default class LocationController {
 
   // Instance of location database
-  database: LocationDatabase;
+  database: MockDatabase;
 
   /**
    * Create a new LocationController.
    * @param database The location database instance to use
    */
-   constructor(database: LocationDatabase) {
+   constructor(database: MockDatabase) {
     this.database = database;
-  }
-
-  /**
-   * Check if the given string represents a valid ID in the database.
-   * @param id The ID to check
-   * @param locationDB Database to examine
-   * @returns true if 'id' is present in 'locationDB', false otherwise
-   */
-  isValidId(id: string, locationDB: Map<number, Location>): boolean {
-    let parsedID = parseInt(id);
-    if (!isNaN(parsedID) && locationDB.has(parsedID)) {
-      return true;
-    }
-    return false;
   }
 
   /**

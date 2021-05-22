@@ -1,13 +1,13 @@
 'use strict';
 
 import LocationController from '../controllers/locationController';
-import LocationDatabase from '../databases/locationDatabase';
+import MockDatabase from '../databases/MockDatabase';
 
 /**
  * Set up the URL routes relating to locations.
  * @param app Express instance
  */
-export default function locationRoutes(app: any, locationDatabase: LocationDatabase) {
+export default function locationRoutes(app: any, locationDatabase: MockDatabase) {
 
   // Set up controller
   let locationController: LocationController = new LocationController(locationDatabase);
