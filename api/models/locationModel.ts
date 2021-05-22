@@ -46,7 +46,9 @@ export class Location {
    * @returns True if spaceship was added, false otherwise
    */
   addIncomingSpaceship(spaceship: Spaceship): boolean {
-    if (spaceship !== undefined || this.spaceshipRegistry.size + 1 <= this.capacity) {
+    if ((spaceship !== undefined && spaceship !== null) 
+      && (this.spaceshipRegistry.size + 1 <= this.capacity)) {
+      
       this.spaceshipRegistry.set(spaceship.id, spaceship);
       return true;
     }
@@ -59,7 +61,9 @@ export class Location {
    * @returns True if spaceship was removed, false otherwise
    */
   removeOutgoingSpaceship(spaceship: Spaceship): boolean {
-    if (spaceship !== undefined || this.spaceshipRegistry.size - 1 >= 0) {
+    if ((spaceship !== undefined && spaceship !== null) 
+      && (this.spaceshipRegistry.size - 1 >= 0)) {
+      
       if (this.spaceshipRegistry.has(spaceship.id)) {
         this.spaceshipRegistry.delete(spaceship.id);
         return true;
