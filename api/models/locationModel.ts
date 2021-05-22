@@ -41,15 +41,33 @@ export class Location {
   }
 
   /**
+   * Determine if the given spaceship can be added to the location registry.
+   * @param spaceship Spaceship to add to registry
+   * @returns True if spaceship can be added, false otherwise
+   */
+  spaceshipCanBeAdded(spaceship: Spaceship): boolean {
+    return (spaceship !== undefined && spaceship !== null) 
+      && (this.spaceshipRegistry.size + 1 <= this.capacity)
+     && (!this.spaceshipRegistry.has(spaceship.id));
+  }
+
+  /**
+   * Determine if the given spaceship can be removed from the location registry.
+   * @param spaceship Spaceship to remove from registry
+   * @returns True if spaceship can be removed, false otherwise
+   */
+  spaceshipCanBeRemoved(spaceship: Spaceship): boolean {
+    return (spaceship !== undefined && spaceship !== null)
+      && this.spaceshipRegistry.has(spaceship.id);
+  }
+
+  /**
    * Add the given spaceship to the location registry.
    * @param spaceship Spaceship to add to registry
    * @returns True if spaceship was added, false otherwise
    */
   addIncomingSpaceship(spaceship: Spaceship): boolean {
-    if ((spaceship !== undefined && spaceship !== null) 
-      && (this.spaceshipRegistry.size + 1 <= this.capacity)
-      && (!this.spaceshipRegistry.has(spaceship.id))) {
-      
+    if (this.spaceshipCanBeAdded(spaceship)) {
       this.spaceshipRegistry.set(spaceship.id, spaceship);
       return true;
     }
@@ -62,9 +80,7 @@ export class Location {
    * @returns True if spaceship was removed, false otherwise
    */
   removeOutgoingSpaceship(spaceship: Spaceship): boolean {
-    if ((spaceship !== undefined && spaceship !== null)
-      && this.spaceshipRegistry.has(spaceship.id)) {
-      
+    if (this.spaceshipCanBeRemoved(spaceship)) {
       this.spaceshipRegistry.delete(spaceship.id);
       return true;
     }
