@@ -61,7 +61,7 @@ export default class LocationController {
       console.log("Added '" + newLocation + "' to the list!");
       res.json({ location_was_created: true });
     } else {
-      res.status(400).json({ location_was_created: false, error: "Invalid ID", message: "ID does not exist in the system" });
+      res.status(400).json({ location_was_created: false, error: "Invalid parameters", message: "Required parameters to add a new location were not identified" });
     }
   }
 
