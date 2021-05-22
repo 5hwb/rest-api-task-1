@@ -1,6 +1,7 @@
 'use strict';
 
 import { Request, Response } from "express";
+import LocationDatabase from "../databases/locationDatabase";
 import { Location } from "../models/locationModel";
 
 /**
@@ -8,11 +9,15 @@ import { Location } from "../models/locationModel";
  */
 export default class LocationController {
 
-  // Key-value store for the location data (this will simulate a database)
-  locationDB: Map<number, Location>;
+  // Instance of location database
+  database: LocationDatabase;
 
-  constructor() {
-    this.locationDB = new Map();
+  /**
+   * Create a new LocationController.
+   * @param database The location database instance to use
+   */
+   constructor(database: LocationDatabase) {
+    this.database = database;
   }
 
   /**
@@ -39,7 +44,7 @@ export default class LocationController {
     console.log(req.headers['content-type']);
 
     let allLocations = [];
-    for (let entry of this.locationDB.values()) {
+    for (let entry of this.database.getValues()) {
       allLocations.push(entry);
     }
     res.json({ data: allLocations });
@@ -57,7 +62,7 @@ export default class LocationController {
     // Get values from request body and create new Location instance to add
     if (req.body.id !== undefined && req.body.cityName !== undefined && req.body.planetName !== undefined && req.body.capacity !== undefined) {
       let newLocation = new Location(req.body.id, req.body.cityName, req.body.planetName, req.body.capacity);
-      this.locationDB.set(req.body.id, newLocation);
+      this.database.add(newLocation);
       console.log("Added '" + newLocation + "' to the list!");
       res.json({ location_was_created: true });
     } else {
@@ -75,10 +80,10 @@ export default class LocationController {
     console.log(req.headers['content-type']);
 
     // Check the ID for validity 
-    if (this.isValidId(req.params.locationID, this.locationDB)) {
+    if (this.database.isValidId(req.params.locationID)) {
       // Get the element with the given ID
       let locationID = parseInt(req.params.locationID);
-      let location = this.locationDB.get(locationID);
+      let location = this.database.get(locationID);
       res.json({ data: location });
     } else {
       res.status(400).json({ error: "Invalid ID", message: "ID does not exist in the system" });
@@ -95,11 +100,11 @@ export default class LocationController {
     console.log(req.headers['content-type']);  
 
       // Check the ID for validity 
-      if (this.isValidId(req.params.locationID, this.locationDB)) {
+      if (this.database.isValidId(req.params.locationID)) {
 
         // Delete the element with the given ID
         let locationID = parseInt(req.params.locationID);
-        this.locationDB.delete(locationID);
+        this.database.delete(locationID);
         res.json({ location_was_deleted: true });
 
       } else {
