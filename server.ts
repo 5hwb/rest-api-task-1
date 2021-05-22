@@ -2,6 +2,7 @@
 import express from 'express';
 import spaceshipRoutes from './api/routes/spaceshipRoutes';
 import locationRoutes from './api/routes/locationRoutes';
+import SpaceshipDatabase from './api/databases/spaceshipDatabase';
 
 // Express setup variables
 let app = express();
@@ -11,8 +12,11 @@ let port = 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Set up mock databases
+const spaceshipDatabase: SpaceshipDatabase = new SpaceshipDatabase();
+
 // Register the URL routes
-spaceshipRoutes(app);
+spaceshipRoutes(app, spaceshipDatabase);
 locationRoutes(app);
 
 // Start the API server at the given port

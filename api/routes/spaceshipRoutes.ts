@@ -1,15 +1,16 @@
 'use strict';
 
 import SpaceshipController from '../controllers/spaceshipController';
+import SpaceshipDatabase from '../databases/spaceshipDatabase';
 
 /**
  * Set up the URL routes relating to spaceships.
  * @param app Express instance
  */
-export default function spaceshipRoutes(app: any) {
+export default function spaceshipRoutes(app: any, spaceshipDatabase: SpaceshipDatabase) {
 
   // Set up controller
-  let spaceshipController: SpaceshipController = new SpaceshipController();
+  let spaceshipController: SpaceshipController = new SpaceshipController(spaceshipDatabase);
 
   app.route('/')
     .get(spaceshipController.defaultUrlAction);

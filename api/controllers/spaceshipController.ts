@@ -1,6 +1,7 @@
 'use strict';
 
 import { Request, Response } from "express";
+import SpaceshipDatabase from "../databases/spaceshipDatabase";
 import { Status, Spaceship, stringToStatus } from "../models/spaceshipModel";
 
 /**
@@ -8,25 +9,15 @@ import { Status, Spaceship, stringToStatus } from "../models/spaceshipModel";
  */
 export default class SpaceshipController {
 
-  // Key-value store for the spaceship data (this will simulate a database)
-  spaceshipDB: Map<number, Spaceship>;
-
-  constructor() {
-    this.spaceshipDB = new Map();
-  }
+  // Instance of spaceship database
+  database: SpaceshipDatabase;
 
   /**
-   * Check if the given string represents a valid ID in the database.
-   * @param id The ID to check
-   * @param spaceshipDB Database to examine
-   * @returns true if 'id' is present in 'spaceshipDB', false otherwise
+   * Create a new SpaceshipController.
+   * @param database The spaceship database instance to use
    */
-  isValidId(id: string, spaceshipDB: Map<number, Spaceship>): boolean {
-    let parsedID = parseInt(id);
-    if (!isNaN(parsedID) && spaceshipDB.has(parsedID)) {
-      return true;
-    }
-    return false;
+  constructor(database: SpaceshipDatabase) {
+    this.database = database;
   }
 
   /**
@@ -48,7 +39,7 @@ export default class SpaceshipController {
     console.log(req.headers['content-type']);
 
     let allSpaceships = [];
-    for (let entry of this.spaceshipDB.values()) {
+    for (let entry of this.database.getValues()) {
       allSpaceships.push(entry);
     }
     res.json({ data: allSpaceships });
@@ -66,7 +57,7 @@ export default class SpaceshipController {
     // Get values from request body and create new Spaceship instance to add
     if (req.body.id !== undefined && req.body.name !== undefined && req.body.model !== undefined) {
       let newSpaceship = new Spaceship(req.body.id, req.body.name, req.body.model);
-      this.spaceshipDB.set(req.body.id, newSpaceship);
+      this.database.add(newSpaceship);
       console.log("Added '" + newSpaceship + "' to the list!");
       res.json({ spaceship_was_created: true });
     } else {
@@ -84,10 +75,10 @@ export default class SpaceshipController {
     console.log(req.headers['content-type']);
 
     // Check the ID for validity 
-    if (this.isValidId(req.params.spaceshipID, this.spaceshipDB)) {
+    if (this.database.isValidId(req.params.spaceshipID)) {
       // Get the element with the given ID
       let spaceshipID = parseInt(req.params.spaceshipID);
-      let spaceship = this.spaceshipDB.get(spaceshipID);
+      let spaceship = this.database.get(spaceshipID);
       res.json({ data: spaceship });
     } else {
       res.status(400).json({ error: "Invalid ID", message: "ID does not exist in the system" });
@@ -104,11 +95,11 @@ export default class SpaceshipController {
     console.log(req.headers['content-type']);
 
     // Check the ID for validity 
-    if (this.isValidId(req.params.spaceshipID, this.spaceshipDB)) {
+    if (this.database.isValidId(req.params.spaceshipID)) {
       // Get the element with the given ID.
       // Note: at this point, the ID is definitely a valid one, hence the use of the non-null assertion operator
       let spaceshipID: number = parseInt(req.params.spaceshipID);
-      let spaceship: Spaceship = this.spaceshipDB.get(spaceshipID)!;
+      let spaceship: Spaceship = this.database.get(spaceshipID)!;
       
       console.log(req.body);
 
@@ -136,11 +127,11 @@ export default class SpaceshipController {
     console.log(req.headers['content-type']);  
 
       // Check the ID for validity 
-      if (this.isValidId(req.params.spaceshipID, this.spaceshipDB)) {
+      if (this.database.isValidId(req.params.spaceshipID)) {
 
         // Delete the element with the given ID
         let spaceshipID = parseInt(req.params.spaceshipID);
-        this.spaceshipDB.delete(spaceshipID);
+        this.database.delete(spaceshipID);
         res.json({ spaceship_was_deleted: true });
 
       } else {

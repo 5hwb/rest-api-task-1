@@ -1,5 +1,7 @@
 'use strict';
 
+import { Location } from "./locationModel";
+
 /**
  * Models relating to spaceships
  */
@@ -40,6 +42,7 @@ export class Spaceship {
   name: string;
   model: string;
   status: Status;
+  //currentLocation: Location; // TODO: find out how to add!
 
   /**
    * Create a new Spaceship instance.
@@ -47,11 +50,12 @@ export class Spaceship {
    * @param name Name of spaceship
    * @param model Model of spaceship
    */
-  constructor(id: number, name: string, model: string) {
+  constructor(id: number, name: string, model: string/*, location: Location*/) {
     this.id = id;
     this.name = name;
     this.model = model;
     this.status = Status.Maintenance;
+    //this.currentLocation = location;
   }
 
   /**
