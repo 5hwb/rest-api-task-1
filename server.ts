@@ -18,3 +18,5 @@ locationRoutes(app);
 // Start the API server at the given port
 app.listen(port);
 console.log("RESTful API server is now running at port " + port);
+
+module.exports = app;
