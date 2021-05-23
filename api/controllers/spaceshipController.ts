@@ -44,8 +44,21 @@ export default class SpaceshipController {
     //console.log(req.headers['content-type']);
 
     let allSpaceships = [];
-    for (let entry of this.spaceshipDB.getValues()) {
-      allSpaceships.push(entry);
+    for (let spaceship of this.spaceshipDB.getValues()) {
+      let output = {
+        id: spaceship.id,
+        name: spaceship.name,
+        model: spaceship.model,
+        status: spaceship.status,
+        currentLocation: {
+          id: spaceship.currentLocation.id,
+          cityName: spaceship.currentLocation.cityName,
+          planetName: spaceship.currentLocation.planetName,
+          capacity: spaceship.currentLocation.capacity,
+          numOfSpaceships: spaceship.currentLocation.spaceshipRegistry.size
+        }
+      };
+      allSpaceships.push(output);
     }
     res.json({ data: allSpaceships });
   }
@@ -93,7 +106,20 @@ export default class SpaceshipController {
       // Get the element with the given ID
       let spaceshipID = parseInt(req.params.spaceshipID);
       let spaceship = this.spaceshipDB.get(spaceshipID);
-      res.json({ data: spaceship });
+      let output = {
+        id: spaceship.id,
+        name: spaceship.name,
+        model: spaceship.model,
+        status: spaceship.status,
+        currentLocation: {
+          id: spaceship.currentLocation.id,
+          cityName: spaceship.currentLocation.cityName,
+          planetName: spaceship.currentLocation.planetName,
+          capacity: spaceship.currentLocation.capacity,
+          numOfSpaceships: spaceship.currentLocation.spaceshipRegistry.size
+        }
+      };
+      res.json({ data: output });
     } else {
       res.status(400).json({ error: "Invalid ID", message: "ID does not exist in the system" });
     }
@@ -171,16 +197,16 @@ export default class SpaceshipController {
     //console.log("deleteSpaceship");
     //console.log(req.headers['content-type']);  
 
-      // Check the ID for validity 
-      if (this.spaceshipDB.isValidId(req.params.spaceshipID)) {
+    // Check the ID for validity 
+    if (this.spaceshipDB.isValidId(req.params.spaceshipID)) {
 
-        // Delete the element with the given ID
-        let spaceshipID = parseInt(req.params.spaceshipID);
-        this.spaceshipDB.delete(spaceshipID);
-        res.json({ spaceship_was_deleted: true });
+      // Delete the element with the given ID
+      let spaceshipID = parseInt(req.params.spaceshipID);
+      this.spaceshipDB.delete(spaceshipID);
+      res.json({ spaceship_was_deleted: true });
 
-      } else {
-        res.status(400).json({ spaceship_was_deleted: false, error: "Invalid ID", message: "ID does not exist in the system" });
-      }
+    } else {
+      res.status(400).json({ spaceship_was_deleted: false, error: "Invalid ID", message: "ID does not exist in the system" });
+    }
   }
 }
