@@ -78,7 +78,7 @@ Delete a particular location.
 * **URL**: http://localhost:3000/locations/delete/:locationID (':locationID' is the location's numerical ID)
 * **HTTP request method**: DELETE
 * **Example**: `curl -X DELETE -H 'Content-Type: application/json' -i http://localhost:3000/locations/delete/1` - Delete the location with an ID of 1.
-* **Error checking**: Returns an 'Invalid ID' error if the ID of the given location does not exist. 
+* **Error checking**: Returns an 'Invalid ID' error if the ID of the given location does not exist, or a 'Registered spaceships detected' error if at least 1 spaceship is registered at this location.
 
 ### Get all spaceships
 
@@ -122,7 +122,7 @@ Change the status of a particular spaceship.
   * `status`: The new status of the spaceship in string format
     * Valid status inputs: 'decommissioned', 'maintenance' and 'operational'
 * **Example**: `curl -X POST -H 'Content-Type: application/json' -i http://localhost:3000/spaceships/update/1 --data '{"id": 1, "status": "operational"}'` - Set the spaceship with an ID of 1 to operational status.
-* **Error checking**: Returns an 'Invalid parameters' error if the new status in the request body is not a valid status input, or an 'Invalid ID' error if the ID of the given spaceship does not exist.
+* **Error checking**: Returns an 'Invalid ID' error if the ID of the given spaceship does not exist, or an 'Invalid parameters' error if the new status in the request body is not a valid status input.
 
 ### Move a spaceship to a new location
 
@@ -131,7 +131,7 @@ Move a particular spaceship to a certain location in the galaxy.
 * **URL**: http://localhost:3000/spaceships/move/:spaceshipID/to-location/:newLocationID (':spaceshipID' is the spaceship's numerical ID, ':newLocationID' is the new location's numerical ID)
 * **HTTP request method**: POST
 * **Example**: `curl -X POST -H 'Content-Type: application/json' -i http://localhost:3000/spaceships/move/1/to-location/4` - Move the spaceship with an ID of 1 to the location with an ID of 4.
-* **Error checking**: Returns an 'Internal error' error if something happened during the moving process that prevents it from occurring (spaceship status not set to Operational, spaceship tries to move into a location it's currently at, location's capacity has been exceeded), or an 'Invalid IDs' error if the ID of either the given spaceship or location do not exist.
+* **Error checking**: Returns an 'Invalid IDs' error if the ID of either the given spaceship or location do not exist, or an 'Internal error' error if something happened during the moving process that prevents it from occurring (spaceship status not set to Operational, spaceship tries to move into a location it's currently at, location's capacity has been exceeded).
 
 ### Delete a spaceship
 
