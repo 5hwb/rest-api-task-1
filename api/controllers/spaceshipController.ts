@@ -143,18 +143,19 @@ export default class SpaceshipController {
     if (this.spaceshipDB.isValidId(req.params.spaceshipID) 
       && this.locationDB.isValidId(req.params.newLocationID)) {
       
-        // Get the spaceship and new location with the given IDs.
+      // Get the spaceship and new location with the given IDs.
       // Note: at this point, the ID is definitely a valid one, hence the use of the non-null assertion operator
       let spaceshipID: number = parseInt(req.params.spaceshipID);
       let spaceship: Spaceship = this.spaceshipDB.get(spaceshipID)!;
       let newLocationID: number = parseInt(req.params.newLocationID);
       let newLocation: Location = this.locationDB.get(newLocationID)!;
       
-      // Modify spaceship status
-      if (spaceship.moveLocation(newLocation)) {
+      // Move the spaceship
+      try {
+        spaceship.moveLocation(newLocation);
         res.json({ spaceship_was_moved: true });
-      } else {
-        res.status(400).json({ spaceship_was_moved: false, error: "Internal error", message: "Something prevented the moving from taking place" });
+      } catch (e) {
+        res.status(400).json({ spaceship_was_moved: false, error: "Internal error", message: e });
       }
     } else {
       res.status(400).json({ spaceship_was_moved: false, error: "Invalid IDs", message: "One or both of the IDs do not exist in the system" });

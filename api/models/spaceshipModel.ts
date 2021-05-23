@@ -82,21 +82,31 @@ export class Spaceship {
    * @param newLocation New location of the spaceship
    * @returns True if spaceship was moved, false otherwise
    */
-  moveLocation(newLocation: Location): boolean {
-    if ((newLocation !== undefined && newLocation !== null)
-      && !newLocation.spaceshipRegistry.has(this.id)
-      && this.status == Status.Operational) {
+  moveLocation(newLocation: Location): void {
+    // Null check
+    if (newLocation !== undefined && newLocation !== null) {
 
+      // Check if spacecraft is already at the new location 
+      if (newLocation.spaceshipRegistry.has(this.id)) {
+        throw "Spacecraft is already at this location";
+      }
+      // Check if spaceship status is not operational
+      else if (this.status != Status.Operational) {
+        throw "Spacecraft status is not operational";
+      }
       // Check if the moving operation can be done first
-      if (this.currentLocation.spaceshipCanBeRemoved(this) 
+      else if (this.currentLocation.spaceshipCanBeRemoved(this) 
         && newLocation.spaceshipCanBeAdded(this)) {
 
         this.currentLocation.removeOutgoingSpaceship(this);
         newLocation.addIncomingSpaceship(this);
         this.currentLocation = newLocation;
-        return true; 
+      } else {
+        throw "Capacity of new location has been reached";
       }
+
+    } else {
+      throw "newLocation is either null or undefined";
     }
-    return false;
   }
 }

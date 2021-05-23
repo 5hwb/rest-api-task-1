@@ -35,7 +35,8 @@ describe('Model Test Cases', () => {
     // Make spaceship1 operational first 
     spaceship1.status = Status.Operational;
 
-    expect(spaceship1.moveLocation(location2)).toBe(true);
+    spaceship1.moveLocation(location2);
+
     expect(spaceship1.currentLocation.id).toBe(11);
     expect(location1.spaceshipRegistry.has(spaceship1.id)).toEqual(false);
     expect(location1.spaceshipRegistry.size).toEqual(2);
@@ -44,7 +45,10 @@ describe('Model Test Cases', () => {
   });
 
   it('spaceship1 should not be able to move to location2 again', async () => {
-    expect(spaceship1.moveLocation(location2)).toBe(false);
+    expect(() => {
+      spaceship1.moveLocation(location2); }
+      ).toThrow("Spacecraft is already at this location");
+
     expect(spaceship1.currentLocation.id).toBe(11);
     expect(location1.spaceshipRegistry.has(spaceship1.id)).toEqual(false);
     expect(location1.spaceshipRegistry.size).toEqual(2);
@@ -56,7 +60,10 @@ describe('Model Test Cases', () => {
     // Make spaceship2 operational first 
     spaceship2.status = Status.Operational;
 
-    expect(spaceship2.moveLocation(location2)).toBe(false);
+    expect(() => {
+      spaceship2.moveLocation(location2); }
+      ).toThrow("Capacity of new location has been reached");
+
     expect(spaceship2.currentLocation.id).toBe(10);
     expect(location1.spaceshipRegistry.has(spaceship1.id)).toEqual(false);
     expect(location1.spaceshipRegistry.size).toEqual(2);
@@ -66,7 +73,11 @@ describe('Model Test Cases', () => {
 
   it('spaceship3 should not be able to move to location3 as its status is not Operational', async () => {
     expect(spaceship3.status).toBe(Status.Maintenance);
-    expect(spaceship3.moveLocation(location3)).toBe(false);
+
+    expect(() => {
+      spaceship3.moveLocation(location3); }
+      ).toThrow("Spacecraft status is not operational");
+
     expect(spaceship3.currentLocation.id).toBe(10);
     expect(location1.spaceshipRegistry.has(spaceship3.id)).toEqual(true);
     expect(location1.spaceshipRegistry.size).toEqual(2);
