@@ -42,7 +42,7 @@ To experiment with the REST API, run `add_sample_data.sh` in the terminal to add
 
 ### Get all locations
 
-Get the information on all locations.
+Get the information on all locations: ID, city name, planet name, capacity, number of spaceships at this location, and their IDs.
 
 * **URL**: http://localhost:3000/locations
 * **HTTP request method**: GET
@@ -64,7 +64,7 @@ Create a new location.
 
 ### Read a location
 
-Get the information on a particular location.
+Get the information on a particular location: ID, city name, planet name, capacity, number of spaceships at this location, and their IDs.
 
 * **URL**: http://localhost:3000/locations/:locationID (':locationID' is the location's numerical ID)
 * **HTTP request method**: GET
@@ -82,7 +82,7 @@ Delete a particular location.
 
 ### Get all spaceships
 
-Get the information on all spaceships.
+Get the information on all spaceships: ID, name, model, status and current location.
 
 * **URL**: http://localhost:3000/spaceships
 * **HTTP request method**: GET
@@ -104,7 +104,7 @@ Create a new spaceship. By default, the status of all new spaceships will be set
 
 ### Read a spaceship
 
-Get the information on a particular spaceship.
+Get the information on a particular spaceship: ID, name, model, status and current location.
 
 * **URL**: http://localhost:3000/spaceships/:spaceshipID (':spaceshipID' is the spaceship's numerical ID)
 * **HTTP request method**: GET
