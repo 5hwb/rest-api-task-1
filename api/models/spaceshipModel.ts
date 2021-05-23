@@ -93,6 +93,7 @@ export class Spaceship {
 
         this.currentLocation.removeOutgoingSpaceship(this);
         newLocation.addIncomingSpaceship(this);
+        this.currentLocation = newLocation;
         return true; 
       }
     }
