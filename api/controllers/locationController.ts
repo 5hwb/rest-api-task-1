@@ -30,8 +30,17 @@ export default class LocationController {
     //console.log(req.headers['content-type']);
 
     let allLocations = [];
-    for (let entry of this.database.getValues()) {
-      allLocations.push(entry);
+    for (let location of this.database.getValues()) {
+      let output = {
+        id: location.id,
+        cityName: location.cityName,
+        planetName: location.planetName,
+        capacity: location.capacity,
+        numOfSpaceships: location.spaceshipRegistry.size,
+        spaceshipIDs: Array.from(location.spaceshipRegistry.keys())
+      };
+
+      allLocations.push(output);
     }
     res.json({ data: allLocations });
   }
@@ -70,7 +79,15 @@ export default class LocationController {
       // Get the element with the given ID
       let locationID = parseInt(req.params.locationID);
       let location = this.database.get(locationID);
-      res.json({ data: location });
+      let output = {
+        id: location.id,
+        cityName: location.cityName,
+        planetName: location.planetName,
+        capacity: location.capacity,
+        numOfSpaceships: location.spaceshipRegistry.size,
+        spaceshipIDs: Array.from(location.spaceshipRegistry.keys())
+      };
+      res.json({ data: output });
     } else {
       res.status(400).json({ error: "Invalid ID", message: "ID does not exist in the system" });
     }
