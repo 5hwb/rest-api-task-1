@@ -485,7 +485,7 @@ const app = require('../server');
     expect(res.body).toHaveProperty('spaceship_was_moved');
     expect(res.body.spaceship_was_moved).toEqual(false);
     expect(res.body).toHaveProperty('error');
-    expect(res.body.error).toEqual("Internal error");
+    expect(res.body.error).toEqual("Cannot move");
   });
 
   it('spaceship with ID of 8 (currently at location with ID of 12) should not be able to move to location with ID of 11 as its capacity has been exceeded', async () => {
@@ -502,7 +502,7 @@ const app = require('../server');
     expect(res.body).toHaveProperty('spaceship_was_moved');
     expect(res.body.spaceship_was_moved).toEqual(false);
     expect(res.body).toHaveProperty('error');
-    expect(res.body.error).toEqual("Internal error");
+    expect(res.body.error).toEqual("Cannot move");
   });
 
   it('spaceship with ID of 9 (currently at location with ID of 12) should not be able to move to location with ID of 13 as its status is not Operational', async () => {
@@ -514,7 +514,7 @@ const app = require('../server');
     expect(res.body).toHaveProperty('spaceship_was_moved');
     expect(res.body.spaceship_was_moved).toEqual(false);
     expect(res.body).toHaveProperty('error');
-    expect(res.body.error).toEqual("Internal error");
+    expect(res.body.error).toEqual("Cannot move");
   });
 
   it('should not move non-existent spaceship', async () => {
