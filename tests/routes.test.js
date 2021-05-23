@@ -2,7 +2,10 @@ const request = require('supertest');
 const { Status } = require('../api/models/spaceshipModel');
 const app = require('../server');
 
-describe('REST API Test Cases', () => {
+/**
+ * Test cases for the Spaceship and Location REST APIs.
+ */
+ describe('REST API Test Cases', () => {
 
   // ===============================================
   // ===============================================
@@ -20,7 +23,7 @@ describe('REST API Test Cases', () => {
     expect(res.body.location_was_created).toEqual(true);
   });
 
-  // The following 2 locations will be used for the spaceship movement test cases 
+  // The following 3 locations will be used for the spaceship movement test cases 
 
   it('should create a 2nd new location', async () => {
     const res = await request(app)
