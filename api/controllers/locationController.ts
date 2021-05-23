@@ -26,8 +26,8 @@ export default class LocationController {
    * @param res HTTP response object
    */
   listLocations = (req: Request, res: Response) => {
-    console.log("listLocations");
-    console.log(req.headers['content-type']);
+    //console.log("listLocations");
+    //console.log(req.headers['content-type']);
 
     let allLocations = [];
     for (let entry of this.database.getValues()) {
@@ -42,14 +42,14 @@ export default class LocationController {
    * @param res HTTP response object
    */
   createLocation = (req: Request, res: Response) => {
-    console.log("createLocation");
-    console.log(req.headers['content-type']);
+    //console.log("createLocation");
+    //console.log(req.headers['content-type']);
 
     // Get values from request body and create new Location instance to add
     if (req.body.id !== undefined && req.body.cityName !== undefined && req.body.planetName !== undefined && req.body.capacity !== undefined) {
       let newLocation = new Location(req.body.id, req.body.cityName, req.body.planetName, req.body.capacity);
       this.database.add(newLocation);
-      console.log("Added '" + newLocation + "' to the list!");
+      //console.log("Added '" + newLocation + "' to the list!");
       res.json({ location_was_created: true });
     } else {
       res.status(400).json({ location_was_created: false, error: "Invalid parameters", message: "Required parameters to add a new location were not identified" });
@@ -62,8 +62,8 @@ export default class LocationController {
    * @param res HTTP response object
    */
   readLocation = (req: Request, res: Response) => {
-    console.log("readLocation");
-    console.log(req.headers['content-type']);
+    //console.log("readLocation");
+    //console.log(req.headers['content-type']);
 
     // Check the ID for validity 
     if (this.database.isValidId(req.params.locationID)) {
@@ -82,8 +82,8 @@ export default class LocationController {
    * @param res HTTP response object
    */
   deleteLocation = (req: Request, res: Response) => {
-    console.log("deleteLocation");
-    console.log(req.headers['content-type']);  
+    //console.log("deleteLocation");
+    //console.log(req.headers['content-type']);  
 
       // Check the ID for validity 
       if (this.database.isValidId(req.params.locationID)) {

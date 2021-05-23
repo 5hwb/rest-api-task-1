@@ -40,8 +40,8 @@ export default class SpaceshipController {
    * @param res HTTP response object
    */
   listSpaceships = (req: Request, res: Response) => {
-    console.log("listSpaceships");
-    console.log(req.headers['content-type']);
+    //console.log("listSpaceships");
+    //console.log(req.headers['content-type']);
 
     let allSpaceships = [];
     for (let entry of this.spaceshipDB.getValues()) {
@@ -56,8 +56,8 @@ export default class SpaceshipController {
    * @param res HTTP response object
    */
   createSpaceship = (req: Request, res: Response) => {
-    console.log("createSpaceship");
-    console.log(req.headers['content-type']);
+    //console.log("createSpaceship");
+    //console.log(req.headers['content-type']);
 
     // Get values from request body and create new Spaceship instance to add
     if (req.body.id !== undefined && req.body.name !== undefined 
@@ -68,7 +68,7 @@ export default class SpaceshipController {
       if (this.locationDB.isValidId(req.body.currentLocationId)) {
         let newSpaceship = new Spaceship(req.body.id, req.body.name, req.body.model, this.locationDB.get(req.body.currentLocationId));
         this.spaceshipDB.add(newSpaceship);
-        console.log("Added '" + newSpaceship + "' to the list!");
+        //console.log("Added '" + newSpaceship + "' to the list!");
         res.json({ spaceship_was_created: true });
       } else {
         res.status(400).json({ spaceship_was_created: false, error: "Invalid current location ID", message: "There is no location with the given ID" });
@@ -85,8 +85,8 @@ export default class SpaceshipController {
    * @param res HTTP response object
    */
   readSpaceship = (req: Request, res: Response) => {
-    console.log("readSpaceship");
-    console.log(req.headers['content-type']);
+    //console.log("readSpaceship");
+    //console.log(req.headers['content-type']);
 
     // Check the ID for validity 
     if (this.spaceshipDB.isValidId(req.params.spaceshipID)) {
@@ -105,8 +105,8 @@ export default class SpaceshipController {
    * @param res HTTP response object
    */
   updateSpaceship = (req: Request, res: Response) => {
-    console.log("updateSpaceship");
-    console.log(req.headers['content-type']);
+    //console.log("updateSpaceship");
+    //console.log(req.headers['content-type']);
 
     // Check the ID for validity 
     if (this.spaceshipDB.isValidId(req.params.spaceshipID)) {
@@ -115,7 +115,7 @@ export default class SpaceshipController {
       let spaceshipID: number = parseInt(req.params.spaceshipID);
       let spaceship: Spaceship = this.spaceshipDB.get(spaceshipID)!;
       
-      console.log(req.body);
+      //console.log(req.body);
 
       // Modify spaceship status
       let newStatus: string = req.body.status;
@@ -136,8 +136,8 @@ export default class SpaceshipController {
    * @param res HTTP response object
    */
   moveSpaceship = (req: Request, res: Response) => {
-    console.log("moveSpaceship");
-    console.log(req.headers['content-type']);
+    //console.log("moveSpaceship");
+    //console.log(req.headers['content-type']);
 
     // Check the ID for validity 
     if (this.spaceshipDB.isValidId(req.params.spaceshipID) 
@@ -167,8 +167,8 @@ export default class SpaceshipController {
    * @param res HTTP response object
    */
   deleteSpaceship = (req: Request, res: Response) => {
-    console.log("deleteSpaceship");
-    console.log(req.headers['content-type']);  
+    //console.log("deleteSpaceship");
+    //console.log(req.headers['content-type']);  
 
       // Check the ID for validity 
       if (this.spaceshipDB.isValidId(req.params.spaceshipID)) {
