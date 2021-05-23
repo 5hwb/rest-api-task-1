@@ -8,7 +8,7 @@ Implementation of a REST API for a hypothetical spacecraft logistics system.
 * Node Package Manager (NPM)
 * `curl` command line utility
 
-## Node.js dependencies
+### Node.js dependencies
 
 The following libraries and packages were used:
 
@@ -18,23 +18,20 @@ The following libraries and packages were used:
 * Jest - testing framework
 * Supertest - library for testing HTTP responses 
 
+To view the dependencies, open `package.json`.
+
 ## Setup
 
-1. Install the dependencies by running the following commands in the terminal:
+1. Run `npm install` in the terminal to install all required dependencies automatically.
+2. Compile the TypeScript files with `npx tsc`.
+3. Run `npm test` to execute the Jest test cases in the `tests/` directory.
 
-```
-npm install --save express
-npm install --save-dev nodemon typescript @types/node @types/express jest supertest
-```
+## Run the API server
 
-2. Compile the TypeScript with `npx tsc`.
+1. Run `npm run start` to start the server.
+2. Before executing PUT or POST requests, set the header 'Content-Type' to 'application/json' to ensure the request body is formatted properly.
 
-## How to run the API server
-
-1. Open a terminal and run `npm run start` to start the server.
-2. Before executing PUT or POST requests, set the header 'Content-Type' to 'applications/json' to ensure the request body is formatted properly.
-
-## Usage
+## API Documentation
 
 Parameters are generally passed through the request body, except if only IDs are involved, in which they are passed through the URL. The request body must be in JSON format with all parameter names represented as strings.
 
@@ -131,7 +128,7 @@ Move a particular spaceship to a certain location in the galaxy.
 * **URL**: http://localhost:3000/spaceships/move/:spaceshipID/to-location/:newLocationID (':spaceshipID' is the spaceship's numerical ID, ':newLocationID' is the new location's numerical ID)
 * **HTTP request method**: POST
 * **Example**: `curl -X POST -H 'Content-Type: application/json' -i http://localhost:3000/spaceships/move/1/to-location/4` - Move the spaceship with an ID of 1 to the location with an ID of 4.
-* **Error checking**: Returns an 'Invalid IDs' error if the ID of either the given spaceship or location do not exist, or an 'Internal error' error if something happened during the moving process that prevents it from occurring (spaceship status not set to Operational, spaceship tries to move into a location it's currently at, location's capacity has been exceeded).
+* **Error checking**: Returns an 'Invalid IDs' error if the ID of either the given spaceship or location do not exist, or a 'Cannot move' error if the following scenarios occurred: spaceship status not set to Operational, spaceship tries to move into a location it's currently at, location's capacity has been exceeded.
 
 ### Delete a spaceship
 
