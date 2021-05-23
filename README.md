@@ -115,10 +115,9 @@ Change the status of a particular spaceship.
 * **URL**: http://localhost:3000/spaceships/update/:spaceshipID (':spaceshipID' is the spaceship's numerical ID)
 * **HTTP request method**: POST
 * **Request body format**: 
-  * `id`: Numerical ID of spaceship
   * `status`: The new status of the spaceship in string format
     * Valid status inputs: 'decommissioned', 'maintenance' and 'operational'
-* **Example**: `curl -X POST -H 'Content-Type: application/json' -i http://localhost:3000/spaceships/update/1 --data '{"id": 1, "status": "operational"}'` - Set the spaceship with an ID of 1 to operational status.
+* **Example**: `curl -X POST -H 'Content-Type: application/json' -i http://localhost:3000/spaceships/update/1 --data '{"status": "operational"}'` - Set the spaceship with an ID of 1 to operational status.
 * **Error checking**: Returns an 'Invalid ID' error if the ID of the given spaceship does not exist, or an 'Invalid parameters' error if the new status in the request body is not a valid status input.
 
 ### Move a spaceship to a new location
