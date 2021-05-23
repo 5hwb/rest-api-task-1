@@ -181,7 +181,7 @@ export default class SpaceshipController {
         spaceship.moveLocation(newLocation);
         res.json({ spaceship_was_moved: true });
       } catch (e) {
-        res.status(400).json({ spaceship_was_moved: false, error: "Internal error", message: e });
+        res.status(400).json({ spaceship_was_moved: false, error: "Cannot move", message: e });
       }
     } else {
       res.status(400).json({ spaceship_was_moved: false, error: "Invalid IDs", message: "One or both of the IDs do not exist in the system" });
