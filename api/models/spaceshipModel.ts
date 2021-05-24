@@ -80,7 +80,6 @@ export class Spaceship {
    * Move the Spaceship to the given new location. 
    * Only Spaceships with operational status can be moved.
    * @param newLocation New location of the spaceship
-   * @returns True if spaceship was moved, false otherwise
    */
   moveLocation(newLocation: Location): void {
     // Null check
