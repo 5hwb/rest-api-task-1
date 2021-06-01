@@ -102,21 +102,21 @@ export default class LocationController {
     //console.log("deleteLocation");
     //console.log(req.headers['content-type']);  
 
-      // Check the ID for validity 
-      if (this.database.isValidId(req.params.locationID)) {
+    // Check the ID for validity 
+    if (this.database.isValidId(req.params.locationID)) {
 
-        let locationID = parseInt(req.params.locationID);
-        let location = this.database.get(locationID);
+      let locationID = parseInt(req.params.locationID);
+      let location = this.database.get(locationID);
 
-        // Ensure that no spaceships are at this location before deletion
-        if (location.spaceshipRegistry.size == 0) {
-          this.database.delete(locationID);
-          res.json({ location_was_deleted: true });  
-        } else {
-          res.status(400).json({ location_was_deleted: false, error: "Registered spaceships detected", message: "Cannot delete a location with 1 or more registered spaceships" });
-        }
+      // Ensure that no spaceships are at this location before deletion
+      if (location.spaceshipRegistry.size == 0) {
+        this.database.delete(locationID);
+        res.json({ location_was_deleted: true });  
       } else {
-        res.status(400).json({ location_was_deleted: false, error: "Invalid ID", message: "ID does not exist in the system" });
+        res.status(400).json({ location_was_deleted: false, error: "Registered spaceships detected", message: "Cannot delete a location with 1 or more registered spaceships" });
       }
+    } else {
+      res.status(400).json({ location_was_deleted: false, error: "Invalid ID", message: "ID does not exist in the system" });
+    }
   }
 }
