@@ -1,5 +1,6 @@
 // Required imports
 import express from "express";
+import cors from "cors";
 import spaceshipRoutes from "./api/routes/spaceshipRoutes";
 import locationRoutes from "./api/routes/locationRoutes";
 import MockDatabase from "./api/databases/MockDatabase";
@@ -13,6 +14,7 @@ let port = 3002;
 // Set up middleware for formatting request body data
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
 
 // Set up mock databases
 const locationDatabase: MockDatabase = new LocationDatabase();
