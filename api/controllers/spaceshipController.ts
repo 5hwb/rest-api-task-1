@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 import { Request, Response } from "express";
 import MockDatabase from "../databases/MockDatabase";
@@ -9,7 +9,6 @@ import { Status, Spaceship, stringToStatus } from "../models/spaceshipModel";
  * Handles user-inputted URLs relating to spaceships.
  */
 export default class SpaceshipController {
-
   // Instance of spaceship database
   spaceshipDB: MockDatabase;
 
@@ -31,8 +30,10 @@ export default class SpaceshipController {
    * @param res HTTP response object
    */
   defaultUrlAction = (req: Request, res: Response) => {
-    res.send("You've entered the default URL. Go to http://localhost:3000/spaceships to view data on all the spaceships.");
-  }
+    res.send(
+      "You've entered the default URL. Go to http://localhost:3000/spaceships to view data on all the spaceships."
+    );
+  };
 
   /**
    * List all spaceships in the database.
@@ -55,13 +56,13 @@ export default class SpaceshipController {
           cityName: spaceship.currentLocation.cityName,
           planetName: spaceship.currentLocation.planetName,
           capacity: spaceship.currentLocation.capacity,
-          numOfSpaceships: spaceship.currentLocation.spaceshipRegistry.size
-        }
+          numOfSpaceships: spaceship.currentLocation.spaceshipRegistry.size,
+        },
       };
       allSpaceships.push(output);
     }
     res.json({ data: allSpaceships });
-  }
+  };
 
   /**
    * Add a new spaceship to the database.
@@ -73,24 +74,43 @@ export default class SpaceshipController {
     //console.log(req.headers['content-type']);
 
     // Get values from request body and create new Spaceship instance to add
-    if (req.body.id !== undefined && req.body.name !== undefined 
-      && req.body.model !== undefined 
-      && req.body.currentLocationId !== undefined) {
-
+    if (
+      req.body.id !== undefined &&
+      req.body.name !== undefined &&
+      req.body.model !== undefined &&
+      req.body.currentLocationId !== undefined
+    ) {
       // Check if provided current location ID is valid
       if (this.locationDB.isValidId(req.body.currentLocationId)) {
-        let newSpaceship = new Spaceship(req.body.id, req.body.name, req.body.model, this.locationDB.get(req.body.currentLocationId));
+        let newSpaceship = new Spaceship(
+          req.body.id,
+          req.body.name,
+          req.body.model,
+          this.locationDB.get(req.body.currentLocationId)
+        );
         this.spaceshipDB.add(newSpaceship);
         //console.log("Added '" + newSpaceship + "' to the list!");
         res.json({ spaceship_was_created: true });
       } else {
-        res.status(400).json({ spaceship_was_created: false, error: "Invalid current location ID", message: "There is no location with the given ID" });
+        res
+          .status(400)
+          .json({
+            spaceship_was_created: false,
+            error: "Invalid current location ID",
+            message: "There is no location with the given ID",
+          });
       }
-
     } else {
-      res.status(400).json({ spaceship_was_created: false, error: "Invalid parameters", message: "Required parameters to add a new spaceship were not identified" });
+      res
+        .status(400)
+        .json({
+          spaceship_was_created: false,
+          error: "Invalid parameters",
+          message:
+            "Required parameters to add a new spaceship were not identified",
+        });
     }
-  }
+  };
 
   /**
    * Get the spaceship with the given ID.
@@ -101,7 +121,7 @@ export default class SpaceshipController {
     //console.log("readSpaceship");
     //console.log(req.headers['content-type']);
 
-    // Check the ID for validity 
+    // Check the ID for validity
     if (this.spaceshipDB.isValidId(req.params.spaceshipID)) {
       // Get the element with the given ID
       let spaceshipID = parseInt(req.params.spaceshipID);
@@ -116,14 +136,19 @@ export default class SpaceshipController {
           cityName: spaceship.currentLocation.cityName,
           planetName: spaceship.currentLocation.planetName,
           capacity: spaceship.currentLocation.capacity,
-          numOfSpaceships: spaceship.currentLocation.spaceshipRegistry.size
-        }
+          numOfSpaceships: spaceship.currentLocation.spaceshipRegistry.size,
+        },
       };
       res.json({ data: output });
     } else {
-      res.status(400).json({ error: "Invalid ID", message: "ID does not exist in the system" });
+      res
+        .status(400)
+        .json({
+          error: "Invalid ID",
+          message: "ID does not exist in the system",
+        });
     }
-  }
+  };
 
   /**
    * Update the status of the spaceship with the given ID.
@@ -134,13 +159,13 @@ export default class SpaceshipController {
     //console.log("updateSpaceship");
     //console.log(req.headers['content-type']);
 
-    // Check the ID for validity 
+    // Check the ID for validity
     if (this.spaceshipDB.isValidId(req.params.spaceshipID)) {
       // Get the element with the given ID.
       // Note: at this point, the ID is definitely a valid one, hence the use of the non-null assertion operator
       let spaceshipID: number = parseInt(req.params.spaceshipID);
       let spaceship: Spaceship = this.spaceshipDB.get(spaceshipID)!;
-      
+
       //console.log(req.body);
 
       // Modify spaceship status
@@ -149,12 +174,24 @@ export default class SpaceshipController {
         spaceship.status = stringToStatus(newStatus);
         res.json({ spaceship_was_updated: true, new_data: spaceship });
       } else {
-        res.status(400).json({ spaceship_was_updated: false, error: "Invalid parameters", message: "State parameter is either missing or invalid" });
+        res
+          .status(400)
+          .json({
+            spaceship_was_updated: false,
+            error: "Invalid parameters",
+            message: "State parameter is either missing or invalid",
+          });
       }
     } else {
-      res.status(400).json({ spaceship_was_updated: false, error: "Invalid ID", message: "ID does not exist in the system" });
+      res
+        .status(400)
+        .json({
+          spaceship_was_updated: false,
+          error: "Invalid ID",
+          message: "ID does not exist in the system",
+        });
     }
-  }
+  };
 
   /**
    * Move a spaceship to a designated location with the given ID.
@@ -165,28 +202,41 @@ export default class SpaceshipController {
     //console.log("moveSpaceship");
     //console.log(req.headers['content-type']);
 
-    // Check the ID for validity 
-    if (this.spaceshipDB.isValidId(req.params.spaceshipID) 
-      && this.locationDB.isValidId(req.params.newLocationID)) {
-      
+    // Check the ID for validity
+    if (
+      this.spaceshipDB.isValidId(req.params.spaceshipID) &&
+      this.locationDB.isValidId(req.params.newLocationID)
+    ) {
       // Get the spaceship and new location with the given IDs.
       // Note: at this point, the ID is definitely a valid one, hence the use of the non-null assertion operator
       let spaceshipID: number = parseInt(req.params.spaceshipID);
       let spaceship: Spaceship = this.spaceshipDB.get(spaceshipID)!;
       let newLocationID: number = parseInt(req.params.newLocationID);
       let newLocation: Location = this.locationDB.get(newLocationID)!;
-      
+
       // Move the spaceship
       try {
         spaceship.moveLocation(newLocation);
         res.json({ spaceship_was_moved: true });
       } catch (e) {
-        res.status(400).json({ spaceship_was_moved: false, error: "Cannot move", message: e });
+        res
+          .status(400)
+          .json({
+            spaceship_was_moved: false,
+            error: "Cannot move",
+            message: e,
+          });
       }
     } else {
-      res.status(400).json({ spaceship_was_moved: false, error: "Invalid IDs", message: "One or both of the IDs do not exist in the system" });
+      res
+        .status(400)
+        .json({
+          spaceship_was_moved: false,
+          error: "Invalid IDs",
+          message: "One or both of the IDs do not exist in the system",
+        });
     }
-  }
+  };
 
   /**
    * Delete the spaceship with the given ID.
@@ -195,18 +245,22 @@ export default class SpaceshipController {
    */
   deleteSpaceship = (req: Request, res: Response) => {
     //console.log("deleteSpaceship");
-    //console.log(req.headers['content-type']);  
+    //console.log(req.headers['content-type']);
 
-    // Check the ID for validity 
+    // Check the ID for validity
     if (this.spaceshipDB.isValidId(req.params.spaceshipID)) {
-
       // Delete the element with the given ID
       let spaceshipID = parseInt(req.params.spaceshipID);
       this.spaceshipDB.delete(spaceshipID);
       res.json({ spaceship_was_deleted: true });
-
     } else {
-      res.status(400).json({ spaceship_was_deleted: false, error: "Invalid ID", message: "ID does not exist in the system" });
+      res
+        .status(400)
+        .json({
+          spaceship_was_deleted: false,
+          error: "Invalid ID",
+          message: "ID does not exist in the system",
+        });
     }
-  }
+  };
 }

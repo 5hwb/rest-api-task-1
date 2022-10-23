@@ -4,8 +4,7 @@ import { Spaceship } from "../models/spaceshipModel";
 /**
  * Simulate a database for spaceships.
  */
- export default class SpaceshipDatabase implements MockDatabase {
-
+export default class SpaceshipDatabase implements MockDatabase {
   // Key-value store for the spaceship data
   spaceshipDB: Map<number, Spaceship>;
 
@@ -20,7 +19,7 @@ import { Spaceship } from "../models/spaceshipModel";
     }
     return false;
   }
-  
+
   getValues(): Spaceship[] {
     return Array.from(this.spaceshipDB.values());
   }

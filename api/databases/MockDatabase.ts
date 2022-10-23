@@ -1,8 +1,7 @@
 /**
  * Interface for all mock database instances.
  */
- export default interface MockDatabase {
-
+export default interface MockDatabase {
   /**
    * Check if the given string represents a valid ID in the database.
    * @param id The ID to check
@@ -10,7 +9,7 @@
    * @returns true if an element with given ID is present in the database, false otherwise
    */
   isValidId(id: string): boolean;
-  
+
   /**
    * Get all values in the database.
    * @returns All values in the DB
@@ -20,7 +19,7 @@
   /**
    * Get the element with the given ID.
    * @param id The ID of the element to get
-   * @returns The requested element. If ID is not in DB, return undefined. 
+   * @returns The requested element. If ID is not in DB, return undefined.
    */
   get(id: number): any | undefined;
 
@@ -33,7 +32,7 @@
   /**
    * Delete the element with the given ID.
    * @param id The ID of the element to delete
-   * @returns True if the element was deleted, false otherwise. 
+   * @returns True if the element was deleted, false otherwise.
    */
-   delete(id: number): boolean;
+  delete(id: number): boolean;
 }

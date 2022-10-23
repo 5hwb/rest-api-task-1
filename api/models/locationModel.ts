@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 import { Spaceship } from "./spaceshipModel";
 
@@ -24,7 +24,12 @@ export class Location {
   /**
    * Create a new Location instance.
    */
-  constructor(id: number, cityName: string, planetName: string, capacity: number) {
+  constructor(
+    id: number,
+    cityName: string,
+    planetName: string,
+    capacity: number
+  ) {
     this.id = id;
     this.cityName = cityName;
     this.planetName = planetName;
@@ -37,7 +42,16 @@ export class Location {
    * @returns String representation
    */
   toString(): string {
-    return "id: " + this.id + ", cityName: " + this.cityName + ", planetName: " + this.planetName + ", capacity: " + this.capacity;
+    return (
+      "id: " +
+      this.id +
+      ", cityName: " +
+      this.cityName +
+      ", planetName: " +
+      this.planetName +
+      ", capacity: " +
+      this.capacity
+    );
   }
 
   /**
@@ -46,9 +60,12 @@ export class Location {
    * @returns True if spaceship can be added, false otherwise
    */
   spaceshipCanBeAdded(spaceship: Spaceship): boolean {
-    return (spaceship !== undefined && spaceship !== null) 
-      && (this.spaceshipRegistry.size + 1 <= this.capacity)
-     && (!this.spaceshipRegistry.has(spaceship.id));
+    return (
+      spaceship !== undefined &&
+      spaceship !== null &&
+      this.spaceshipRegistry.size + 1 <= this.capacity &&
+      !this.spaceshipRegistry.has(spaceship.id)
+    );
   }
 
   /**
@@ -57,8 +74,11 @@ export class Location {
    * @returns True if spaceship can be removed, false otherwise
    */
   spaceshipCanBeRemoved(spaceship: Spaceship): boolean {
-    return (spaceship !== undefined && spaceship !== null)
-      && this.spaceshipRegistry.has(spaceship.id);
+    return (
+      spaceship !== undefined &&
+      spaceship !== null &&
+      this.spaceshipRegistry.has(spaceship.id)
+    );
   }
 
   /**

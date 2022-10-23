@@ -4,8 +4,7 @@ import { Location } from "../models/locationModel";
 /**
  * Simulate a database for locations.
  */
- export default class LocationDatabase implements MockDatabase {
-
+export default class LocationDatabase implements MockDatabase {
   // Key-value store for the location data (this will simulate a database)
   locationDB: Map<number, Location>;
 
@@ -20,7 +19,7 @@ import { Location } from "../models/locationModel";
     }
     return false;
   }
-  
+
   getValues(): Location[] {
     return Array.from(this.locationDB.values());
   }
@@ -33,7 +32,7 @@ import { Location } from "../models/locationModel";
     this.locationDB.set(newItem.id, newItem);
   }
 
-   delete(id: number): boolean {
+  delete(id: number): boolean {
     return this.locationDB.delete(id);
   }
 }

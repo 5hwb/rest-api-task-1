@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 import { Location } from "./locationModel";
 
@@ -10,11 +10,11 @@ import { Location } from "./locationModel";
  * Indicates the current status of the Spaceship.
  */
 export enum Status {
-  Undefined = 0, 
-  Decommissioned = 1, 
-  Maintenance = 2, 
-  Operational = 3
-};
+  Undefined = 0,
+  Decommissioned = 1,
+  Maintenance = 2,
+  Operational = 3,
+}
 
 /**
  * Convert the given string to a Status enum.
@@ -73,19 +73,30 @@ export class Spaceship {
    * @returns String representation
    */
   toString(): string {
-    return "id: " + this.id + ", name: " + this.name + ", model: " + this.model + ", status: " + this.status + ", currentLocation: { " + this.currentLocation + " }";
+    return (
+      "id: " +
+      this.id +
+      ", name: " +
+      this.name +
+      ", model: " +
+      this.model +
+      ", status: " +
+      this.status +
+      ", currentLocation: { " +
+      this.currentLocation +
+      " }"
+    );
   }
 
   /**
-   * Move the Spaceship to the given new location. 
+   * Move the Spaceship to the given new location.
    * Only Spaceships with operational status can be moved.
    * @param newLocation New location of the spaceship
    */
   moveLocation(newLocation: Location): void {
     // Null check
     if (newLocation !== undefined && newLocation !== null) {
-
-      // Check if spacecraft is already at the new location 
+      // Check if spacecraft is already at the new location
       if (newLocation.spaceshipRegistry.has(this.id)) {
         throw "Spacecraft is already at this location";
       }
@@ -94,16 +105,16 @@ export class Spaceship {
         throw "Spacecraft status is not operational";
       }
       // Check if the moving operation can be done first
-      else if (this.currentLocation.spaceshipCanBeRemoved(this) 
-        && newLocation.spaceshipCanBeAdded(this)) {
-
+      else if (
+        this.currentLocation.spaceshipCanBeRemoved(this) &&
+        newLocation.spaceshipCanBeAdded(this)
+      ) {
         this.currentLocation.removeOutgoingSpaceship(this);
         newLocation.addIncomingSpaceship(this);
         this.currentLocation = newLocation;
       } else {
         throw "Capacity of new location has been reached";
       }
-
     } else {
       throw "newLocation is either null or undefined";
     }
