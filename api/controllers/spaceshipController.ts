@@ -31,7 +31,7 @@ export default class SpaceshipController {
    */
   defaultUrlAction = (req: Request, res: Response) => {
     res.send(
-      "You've entered the default URL. Go to http://localhost:3000/spaceships to view data on all the spaceships."
+      "You've entered the default URL. Go to http://localhost:3002/spaceships to view data on all the spaceships."
     );
   };
 
@@ -92,23 +92,19 @@ export default class SpaceshipController {
         //console.log("Added '" + newSpaceship + "' to the list!");
         res.json({ spaceship_was_created: true });
       } else {
-        res
-          .status(400)
-          .json({
-            spaceship_was_created: false,
-            error: "Invalid current location ID",
-            message: "There is no location with the given ID",
-          });
+        res.status(400).json({
+          spaceship_was_created: false,
+          error: "Invalid current location ID",
+          message: "There is no location with the given ID",
+        });
       }
     } else {
-      res
-        .status(400)
-        .json({
-          spaceship_was_created: false,
-          error: "Invalid parameters",
-          message:
-            "Required parameters to add a new spaceship were not identified",
-        });
+      res.status(400).json({
+        spaceship_was_created: false,
+        error: "Invalid parameters",
+        message:
+          "Required parameters to add a new spaceship were not identified",
+      });
     }
   };
 
@@ -141,12 +137,10 @@ export default class SpaceshipController {
       };
       res.json({ data: output });
     } else {
-      res
-        .status(400)
-        .json({
-          error: "Invalid ID",
-          message: "ID does not exist in the system",
-        });
+      res.status(400).json({
+        error: "Invalid ID",
+        message: "ID does not exist in the system",
+      });
     }
   };
 
@@ -174,22 +168,18 @@ export default class SpaceshipController {
         spaceship.status = stringToStatus(newStatus);
         res.json({ spaceship_was_updated: true, new_data: spaceship });
       } else {
-        res
-          .status(400)
-          .json({
-            spaceship_was_updated: false,
-            error: "Invalid parameters",
-            message: "State parameter is either missing or invalid",
-          });
+        res.status(400).json({
+          spaceship_was_updated: false,
+          error: "Invalid parameters",
+          message: "State parameter is either missing or invalid",
+        });
       }
     } else {
-      res
-        .status(400)
-        .json({
-          spaceship_was_updated: false,
-          error: "Invalid ID",
-          message: "ID does not exist in the system",
-        });
+      res.status(400).json({
+        spaceship_was_updated: false,
+        error: "Invalid ID",
+        message: "ID does not exist in the system",
+      });
     }
   };
 
@@ -219,22 +209,18 @@ export default class SpaceshipController {
         spaceship.moveLocation(newLocation);
         res.json({ spaceship_was_moved: true });
       } catch (e) {
-        res
-          .status(400)
-          .json({
-            spaceship_was_moved: false,
-            error: "Cannot move",
-            message: e,
-          });
+        res.status(400).json({
+          spaceship_was_moved: false,
+          error: "Cannot move",
+          message: e,
+        });
       }
     } else {
-      res
-        .status(400)
-        .json({
-          spaceship_was_moved: false,
-          error: "Invalid IDs",
-          message: "One or both of the IDs do not exist in the system",
-        });
+      res.status(400).json({
+        spaceship_was_moved: false,
+        error: "Invalid IDs",
+        message: "One or both of the IDs do not exist in the system",
+      });
     }
   };
 
@@ -254,13 +240,11 @@ export default class SpaceshipController {
       this.spaceshipDB.delete(spaceshipID);
       res.json({ spaceship_was_deleted: true });
     } else {
-      res
-        .status(400)
-        .json({
-          spaceship_was_deleted: false,
-          error: "Invalid ID",
-          message: "ID does not exist in the system",
-        });
+      res.status(400).json({
+        spaceship_was_deleted: false,
+        error: "Invalid ID",
+        message: "ID does not exist in the system",
+      });
     }
   };
 }

@@ -1,14 +1,14 @@
 // Required imports
-import express from 'express';
-import spaceshipRoutes from './api/routes/spaceshipRoutes';
-import locationRoutes from './api/routes/locationRoutes';
-import MockDatabase from './api/databases/MockDatabase';
-import LocationDatabase from './api/databases/locationDatabase';
-import SpaceshipDatabase from './api/databases/spaceshipDatabase';
+import express from "express";
+import spaceshipRoutes from "./api/routes/spaceshipRoutes";
+import locationRoutes from "./api/routes/locationRoutes";
+import MockDatabase from "./api/databases/MockDatabase";
+import LocationDatabase from "./api/databases/locationDatabase";
+import SpaceshipDatabase from "./api/databases/spaceshipDatabase";
 
 // Express setup variables
 let app = express();
-let port = 3000;
+let port = 3002;
 
 // Set up middleware for formatting request body data
 app.use(express.urlencoded({ extended: true }));
